@@ -15,8 +15,11 @@ inoremap <c-d> <Esc>ddi
 
 "SET
 set number
-if v:version > 703
-  set number relativenumber
+
+if v:version < 703
+    finish
 endif
+
+set number relativenumber
 
 
