@@ -1,5 +1,19 @@
 term screen-256color
 
+startup_message off
+altscreen on
+
+vbell_msg "[[[ ding ]]]"
+vbell off
+
+#windowlist string "%4n %h%=%f"
+
+
+# mouse tracking allows to switch region focus by clicking
+mousetrack on
+
+
+# Status lines
 backtick 1 5 5 true
 termcapinfo rxvt* 'hs:ts=\E]2;:fs=\007:ds=\E]2;\007'
 
@@ -9,3 +23,25 @@ hardstatus alwayslastline '%{= G}[ %{G}%H %{g}][%= %{= w}%?%-Lw%?%{= R}%n*%f %t%
 
 caption string "%{= kw}%Y-%m-%d;%c %{= kw}%-Lw%{= kG}%{+b}[%n %t]%{-b}%{= kw}%+Lw%1`"
 caption always
+
+
+# navigating regions with Ctrl-arrows
+bindkey "^[[1;5D" focus left
+bindkey "^[[1;5C" focus right
+bindkey "^[[1;5A" focus up
+bindkey "^[[1;5B" focus down
+
+
+# default windows
+screen -t Shell1  1 bash
+split
+focus down
+screen -t Python  3 python
+screen -t Shell2  2 bash
+focus up
+select 0
+
+
+# switch windows with F3 (prev) and F4 (next)
+bindkey "^[OR" prev
+bindkey "^[OS" next
