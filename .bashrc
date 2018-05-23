@@ -46,7 +46,7 @@ esac
 # uncomment for a colored prompt, if the terminal has the capability; turned
 # off by default to not distract the user: the focus in a terminal window
 # should be on the output of commands, not on the prompt
-#force_color_prompt=yes
+force_color_prompt=yes
 
 if [ -n "$force_color_prompt" ]; then
     if [ -x /usr/bin/tput ] && tput setaf 1 >&/dev/null; then
@@ -120,5 +120,7 @@ if ! shopt -oq posix; then
 fi
 
 source /opt/ros/kinetic/setup.bash
-source /home/glimberg/catkin_ws/devel/setup.sh
-export GAZEBO_MODEL_PATH=/home/glimberg/catkin_ws/src/automower_sim/am_gazebo/models
+source /home/$USER/catkin_ws/devel/setup.sh
+
+export GAZEBO_MODEL_PATH=/home/$USER/catkin_ws/src/automower_sim/am_gazebo/models
+export ROS_WORKSPACE=/home/$USER/catkin_ws

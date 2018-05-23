@@ -7,7 +7,7 @@ set softtabstop=4
 set shiftwidth=4
 set noexpandtab
 
-set colorcolumn=110
+set colorcolumn=90
 highlight ColorColumn ctermbg=darkgray
 
 "2DO
@@ -32,18 +32,50 @@ Plugin 'scrooloose/nerdtree'
 Plugin 'ctrlpvim/ctrlp.vim'
 
 Plugin 'vim-airline/vim-airline'
-Plugin 'scrooloose/syntastic'
+"" Plugin 'scrooloose/syntastic'
 Plugin 'majutsushi/tagbar'
 Plugin 'valloric/youcompleteme'
 Plugin 'tpope/vim-fugitive'
+Plugin 'airblade/vim-gitgutter'
+Plugin 'sjl/gundo.vim'
 
 " All of your Plugins must be added before the following line
 call vundle#end()            " required
 filetype plugin indent on    " required
 
 
+" Funcions
+function CtagsGitPath()
+	let git_path = split(system('git rev-parse --show-toplevel'),"\n")
+	if v:shell_error == 0 && len(git_path) == 1
+		let tags_file = git_path[0] . '/.git/tags '
+		let tmp = system('ctags -R --extra=f -f ' . tags_file . git_path[0])
+		echo 'tags generated to ' . tags_file 
+	else
+		let tmp = system('ctags -R *')
+		echo 'no git repo, tags generated locally'
+	endif
+endfunction
 
-"LET
+
+" Assigning variables
+" SET
+set tags=./tags;,tags;
+
+""STATUS LINE
+set laststatus=2
+
+"" LineNumbering
+set number
+
+if v:version < 703
+    finish
+endif
+
+set number relativenumber
+
+ 
+" LET 
 ""leader
 let mapleader=","
 
@@ -51,20 +83,18 @@ let mapleader=","
 let g:ctrlp_working_path_mode = 'ra'
 let g:ctrlp_user_command = ['.git', 'cd %s && git ls-files -co --exclude-standard']
 
-""Syntastic
-let g:syntastic_cpp_compiler = "g++"
-let g:syntastic_cpp_compiler_options = "-std=c++11 -Wall -Wextra"
-
-let g:syntastic_cpp_checkers = ['gcc']
-let g:syntastic_python_checkers = ['pylint', 'pylint3']
-
-let g:syntastic_always_populate_loc_list = 1
-let g:syntastic_auto_loc_list = 1
-let g:syntastic_check_on_open = 1
-let g:syntastic_check_on_wq = 0
-
 ""youcompleteme
-let g:ycm_global_ycm_extra_conf = '~/.vim/bundle/youcompleteme/third_party/ycmd/cpp/ycm/.ycm_extra_conf.py'
+let g:ycm_global_ycm_extra_conf = '~/.ycm_extra_conf.py'
+let g:ycm_confirm_extra_conf = 0
+
+let g:ycm_always_populate_location_list = 1
+let g:ycm_enable_diagnostic_signs = 1
+
+let g:ycm_autoclose_preview_window_after_completion = 1
+let g:ycm_autoclose_preview_window_after_insertion = 1
+
+let g:ycm_error_symbol = '✗'
+let g:ycm_warning_symbol = '⚠'
 
 
 "MAPPINGS
@@ -84,6 +114,9 @@ inoremap <C-d> <Esc>ddi
 ""-normal mode
 nnoremap <Tab> <Esc>
 nnoremap <S-Space> i
+nnoremap ln :lnext<cr>
+nnoremap lp :lprevious<cr>
+nnoremap <f7> :call CtagsGitPath()<CR>
 
 ""CtrlP
 nnoremap <leader>. :CtrlPTag<cr>
@@ -94,16 +127,4 @@ nnoremap <Tab> <Esc>
 nnoremap <F8> :TagbarToggle<cr>
 
 
-"SET
-""STATUS LINE
-set laststatus=2
-
-"" LineNumbering
-set number
-
-if v:version < 703
-    finish
-endif
-
-set number relativenumber
 
