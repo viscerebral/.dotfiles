@@ -44,7 +44,7 @@ filetype plugin indent on    " required
 
 
 " Funcions
-function CtagsGitPath()
+function! CtagsGitPath()
 	let git_path = split(system('git rev-parse --show-toplevel'),"\n")
 	if v:shell_error == 0 && len(git_path) == 1
 		let tags_file = git_path[0] . '/.git/tags '
