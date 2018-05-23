@@ -32,7 +32,6 @@ Plugin 'scrooloose/nerdtree'
 Plugin 'ctrlpvim/ctrlp.vim'
 
 Plugin 'vim-airline/vim-airline'
-"" Plugin 'scrooloose/syntastic'
 Plugin 'majutsushi/tagbar'
 Plugin 'valloric/youcompleteme'
 Plugin 'tpope/vim-fugitive'
@@ -96,6 +95,8 @@ let g:ycm_autoclose_preview_window_after_insertion = 1
 let g:ycm_error_symbol = '✗'
 let g:ycm_warning_symbol = '⚠'
 
+""Gundo
+let g:gundo_prefer_python3 = 1
 
 "MAPPINGS
 
@@ -117,6 +118,7 @@ nnoremap <S-Space> i
 nnoremap ln :lnext<cr>
 nnoremap lp :lprevious<cr>
 nnoremap <f7> :call CtagsGitPath()<CR>
+nnoremap <F5> :GundoToggle<CR>
 
 ""CtrlP
 nnoremap <leader>. :CtrlPTag<cr>
