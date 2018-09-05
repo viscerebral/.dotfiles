@@ -7,7 +7,7 @@ set softtabstop=4
 set shiftwidth=4
 set noexpandtab
 
-set colorcolumn=90
+set colorcolumn=120
 highlight ColorColumn ctermbg=darkgray
 
 "2DO
@@ -59,7 +59,8 @@ endfunction
 
 " Assigning variables
 " SET
-set tags=./tags;,tags;
+"set tags=./tags;,tags;
+set tags=tags,./tags,./.git/tags;$HOME
 
 ""STATUS LINE
 set laststatus=2
@@ -67,11 +68,10 @@ set laststatus=2
 "" LineNumbering
 set number
 
-if v:version < 703
-    finish
+if v:version > 703
+	set number relativenumber
 endif
 
-set number relativenumber
 
  
 " LET 
@@ -113,7 +113,6 @@ inoremap <S-Space> <Esc>
 inoremap <C-d> <Esc>ddi
 
 ""-normal mode
-nnoremap <Tab> <Esc>
 nnoremap <S-Space> i
 nnoremap ln :lnext<cr>
 nnoremap lp :lprevious<cr>
@@ -123,10 +122,13 @@ nnoremap <F5> :GundoToggle<CR>
 ""CtrlP
 nnoremap <leader>. :CtrlPTag<cr>
 nnoremap <C-b> :CtrlPBuffer<cr>
-nnoremap <Tab> <Esc>
 
 ""TagBar
 nnoremap <F8> :TagbarToggle<cr>
 
+" AUTOCOMMANDS
+""NERDTree
 
+autocmd vimenter * NERDTree
+autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isTabTree()) | q | endif
 
