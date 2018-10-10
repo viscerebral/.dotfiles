@@ -1,14 +1,7 @@
 set exrc
 set secure
 
-"Should/Could be set in projec specific .vimrc
-set tabstop=4
-set softtabstop=4
-set shiftwidth=4
-set noexpandtab
-
-set colorcolumn=120
-highlight ColorColumn ctermbg=darkgray
+set encoding=UTF-8
 
 "2DO
 "set makeprg=make\ -C\ ../build\ -j9
@@ -27,23 +20,47 @@ call vundle#begin()
 Plugin 'VundleVim/Vundle.vim'
 
 " Plugins
+
+"" Utilities
+Plugin 'sjl/gundo.vim'
+Plugin 'jeetsukumaran/vim-buffergator'
+
+"" Utility exploration/search
 Plugin 'rking/ag.vim'
 Plugin 'scrooloose/nerdtree'
 Plugin 'ctrlpvim/ctrlp.vim'
-
-Plugin 'vim-airline/vim-airline'
 Plugin 'majutsushi/tagbar'
-Plugin 'valloric/youcompleteme'
+Plugin 'gilsondev/searchtasks.vim'
+
+"" Formatting and autofill
+Plugin 'godlygeek/tabular'
+Plugin 'townk/vim-autoclose'
+Plugin 'tomtom/tcomment_vim'
+
+"" Git Support
 Plugin 'tpope/vim-fugitive'
+Plugin 'gregsexton/gitv'
 Plugin 'airblade/vim-gitgutter'
-Plugin 'sjl/gundo.vim'
+Plugin 'kablamo/vim-git-log'
+
+"" Language Support
+Plugin 'valloric/youcompleteme'
+Plugin 'taketwo/vim-ros'
+
+"" Themes
+Plugin 'vim-airline/vim-airline'
+Plugin 'vim-airline/vim-airline-themes'
+Plugin 'ryanoasis/vim-devicons'
 
 " All of your Plugins must be added before the following line
 call vundle#end()            " required
 filetype plugin indent on    " required
 
 
+"*********************
 " Funcions
+"*********************
+
 function! CtagsGitPath()
 	let git_path = split(system('git rev-parse --show-toplevel'),"\n")
 	if v:shell_error == 0 && len(git_path) == 1
@@ -58,8 +75,30 @@ endfunction
 
 
 " Assigning variables
+
+"*********************
 " SET
-"set tags=./tags;,tags;
+"*********************
+syntax on
+
+set tabstop=4
+set softtabstop=4
+set shiftwidth=4
+set noexpandtab
+" set smarttab  ??
+" set expandtab ??
+
+"" Theme and Styling 
+set t_Co=256
+set background=dark
+"set guifont"Hack:h11"
+set nowrap
+
+set cursorline
+set colorcolumn=120
+
+highlight ColorColumn ctermbg=darkgray
+
 set tags=tags,./tags,./.git/tags;$HOME
 
 ""STATUS LINE
@@ -67,16 +106,29 @@ set laststatus=2
 
 "" LineNumbering
 set number
+set ruler
 
 if v:version > 703
 	set number relativenumber
 endif
 
 
- 
+"********************
 " LET 
+"********************
+
+"#Enable Elite mode, No Arrow keys for movement
+let g:elite_mode=1
+
 ""leader
 let mapleader=","
+
+" Vim-Airline Configuration
+let g:airline#extensions#tabline#enabled = 1
+let g:airline_powerline_fonts = 1 
+let g:airline_theme='luna'
+let g:hybrid_custom_term_colors = 1
+let g:hybrid_reduced_contrast = 1
 
 ""CtrlP
 let g:ctrlp_working_path_mode = 'ra'
@@ -95,10 +147,27 @@ let g:ycm_autoclose_preview_window_after_insertion = 1
 let g:ycm_error_symbol = '✗'
 let g:ycm_warning_symbol = '⚠'
 
-""Gundo
-let g:gundo_prefer_python3 = 1
+""" vim-ros
+let g:ycm_semantic_triggers = {
+			\   'roslaunch' : ['="', '$(', '/'],
+			\   'rosmsg,rossrv,rosaction' : ['re!^', '/'],
+			\ }
 
-"MAPPINGS
+""Gundo
+"let g:gundo_prefer_python3 = 1
+
+
+"*********************
+" MAPPINGS
+"*********************
+
+"#Disable arrow movement, resize splits instead.
+if get(g:, 'elite_mode')
+	nnoremap <Up>    :resize +2<CR>
+	nnoremap <Down>  :resize -2<CR>
+	nnoremap <Left>  :vertical resize +2<CR>
+	nnoremap <Right> :vertical resize -2<CR>
+endif
 
 ""NERDTree
 map <C-n> :NERDTreeToggle<cr>
@@ -126,9 +195,13 @@ nnoremap <C-b> :CtrlPBuffer<cr>
 ""TagBar
 nnoremap <F8> :TagbarToggle<cr>
 
+"*********************
 " AUTOCOMMANDS
+"*********************
+
 ""NERDTree
 
 autocmd vimenter * NERDTree
+autocmd vimenter * wincmd l
 autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isTabTree()) | q | endif
 
