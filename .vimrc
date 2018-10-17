@@ -36,6 +36,7 @@ Plugin 'gilsondev/searchtasks.vim'
 Plugin 'godlygeek/tabular'
 Plugin 'townk/vim-autoclose'
 Plugin 'tomtom/tcomment_vim'
+Plugin 'tpope/tpope-vim-abolish'
 
 "" Git Support
 Plugin 'tpope/vim-fugitive'
@@ -97,6 +98,7 @@ set nowrap
 set cursorline
 set colorcolumn=120
 
+hi Normal ctermbg=black
 highlight ColorColumn ctermbg=darkgray
 
 set tags=tags,./tags,./.git/tags;$HOME
