@@ -3,13 +3,7 @@ set secure
 
 set encoding=UTF-8
 
-"2DO
-"set makeprg=make\ -C\ ../build\ -j9
-"nnoremap <F4> :make!<cr>
-"nnoremap <F5> :!./my_great_program<cr>
-"
-
-"Vundle
+" --- Vundle ---
 set nocompatible              " be iMproved, required
 filetype off                  " required
 
@@ -19,36 +13,36 @@ call vundle#begin()
 " let Vundle manage Vundle, required
 Plugin 'VundleVim/Vundle.vim'
 
-" Plugins
+" -- Plugins --
 
-"" Utilities
+"" - Utilities -
 Plugin 'sjl/gundo.vim'
 Plugin 'jeetsukumaran/vim-buffergator'
 
-"" Utility exploration/search
+"" - Utility exploration/search -
 Plugin 'rking/ag.vim'
 Plugin 'scrooloose/nerdtree'
 Plugin 'ctrlpvim/ctrlp.vim'
 Plugin 'majutsushi/tagbar'
 Plugin 'gilsondev/searchtasks.vim'
 
-"" Formatting and autofill
+"" - Formatting and autofill -
 Plugin 'godlygeek/tabular'
 Plugin 'townk/vim-autoclose'
 Plugin 'tomtom/tcomment_vim'
 Plugin 'tpope/tpope-vim-abolish'
 
-"" Git Support
+"" - Git Support -
 Plugin 'tpope/vim-fugitive'
 Plugin 'gregsexton/gitv'
 Plugin 'airblade/vim-gitgutter'
 Plugin 'kablamo/vim-git-log'
 
-"" Language Support
+"" - Language Support -
 Plugin 'valloric/youcompleteme'
 Plugin 'taketwo/vim-ros'
 
-"" Themes
+"" - Themes -
 Plugin 'vim-airline/vim-airline'
 Plugin 'vim-airline/vim-airline-themes'
 Plugin 'ryanoasis/vim-devicons'
@@ -75,6 +69,23 @@ function! CtagsGitPath()
 endfunction
 
 
+"""function! HasWinToRight()
+"""    let l:rightedge = win_screenpos(0)[1] + winwidth(0) - 1
+"""    for l:win in range(1, winnr('$'))
+"""        if l:win != winnr() && win_screenpos(l:win)[1] > l:rightedge
+"""            return 1
+"""        endif
+"""    endfor
+"""    return 0
+"""endfunction
+
+
+function! Refactor()
+    call inputsave()
+    let @z=input("What do you want to rename '" . @z . "' to? ")
+    call inputrestore()
+endfunction
+
 " Assigning variables
 
 "*********************
@@ -85,9 +96,8 @@ syntax on
 set tabstop=4
 set softtabstop=4
 set shiftwidth=4
-set noexpandtab
-" set smarttab  ??
-" set expandtab ??
+set smarttab
+set expandtab
 
 "" Theme and Styling 
 set t_Co=256
@@ -97,9 +107,13 @@ set nowrap
 
 set cursorline
 set colorcolumn=120
+set hlsearch
 
-hi Normal ctermbg=black
+highlight Normal ctermbg=black
 highlight ColorColumn ctermbg=darkgray
+
+highlight ColorColumn ctermbg=235
+highlight CursorLine cterm=NONE ctermbg=235
 
 set tags=tags,./tags,./.git/tags;$HOME
 
@@ -163,47 +177,79 @@ let g:ycm_semantic_triggers = {
 " MAPPINGS
 "*********************
 
-"#Disable arrow movement, resize splits instead.
-if get(g:, 'elite_mode')
-	nnoremap <Up>    :resize +2<CR>
-	nnoremap <Down>  :resize -2<CR>
-	nnoremap <Left>  :vertical resize +2<CR>
-	nnoremap <Right> :vertical resize -2<CR>
-endif
+" -- insert mode --
 
-""NERDTree
-map <C-n> :NERDTreeToggle<cr>
-
-""-insert mode
 inoremap jw <Esc>
 inoremap wj <Esc>
 inoremap ii <Esc>
 inoremap <C-L> <Esc>
 inoremap <S-Space> <Esc>
-
 inoremap <C-d> <Esc>ddi
 
-""-normal mode
-nnoremap <S-Space> i
-nnoremap ln :lnext<cr>
-nnoremap lp :lprevious<cr>
-nnoremap <f7> :call CtagsGitPath()<CR>
+" -- normal mode --
+
+"#Disable arrow movement, resize splits instead.
+if get(g:, 'elite_mode')
+    nnoremap <silent> <Up>    :resize -2<CR>
+	nnoremap <silent> <Down>  :resize +2<CR>
+    """nnoremap  <expr> <Left> HasWinToRight() == 0 ? ' :vertical resize -2<CR>' : 'vertical resize +2'
+	nnoremap <silent> <Left> :vertical resize -2<CR>
+	nnoremap <silent> <Right> :vertical resize +2<CR>
+endif
+
+"#For local replace //does not work for function arguments
+nnoremap gr gd[{V%::s/<C-R>///gc<left><left><left>
+nnoremap gR gD:%s/<C-R>///gc<left><left><left>
+" Locally (local to block) rename a variable
+nnoremap <leader>rf "zyiw:call Refactor()<CR>mx:silent! norm gd<CR>[{V%:s/<C-R>//<c-r>z/g<CR>`x}]'")
+
+nnoremap <leader>h :set hlsearch!<CR>
+nnoremap <leader>H :set cursorline! hlsearch!<CR>
+
+nnoremap gln :lnext<CR>
+nnoremap glp :lprevious<CR>
+nnoremap <F4> :make<CR>
 nnoremap <F5> :GundoToggle<CR>
+nnoremap <F7> :call CtagsGitPath()<CR>
+"# nnoremap <F8> :TagbarToggle<CR>
+"# nnoremap <F9> :YcmCompleter FixIt<CR>
 
-""CtrlP
-nnoremap <leader>. :CtrlPTag<cr>
-nnoremap <C-b> :CtrlPBuffer<cr>
+"" - NERDTree -
+nnoremap <C-n> :NERDTreeToggle<CR>
 
-""TagBar
-nnoremap <F8> :TagbarToggle<cr>
+"" - CtrlP -
+nnoremap <leader>. :CtrlPTag<CR>
+nnoremap <C-b> :CtrlPBuffer<CR>
+
+"" - TagBar -
+nnoremap <F8> :TagbarToggle<CR>
+
+"" - YCM -
+nnoremap <F9> :YcmCompleter FixIt<CR>
+
+
+" -- visual mode --
+
+"" - cu -
+
+noremap <Leader>tb= :Tabularize  /=<CR>
+noremap <Leader>tb: :Tabularize  /:\zs<CR>
+noremap <Leader>tb, :Tabularize  /,\zs<CR>
+noremap <leader>t{ :Tabularize /{<CR>
+noremap <leader>t" :Tabularize /"<CR>
+noremap <leader>t' :Tabularize /'<CR>
+noremap <leader>t[ :Tabularize /[<CR>
+noremap <leader>t/ :Tabularize ///<CR>
+noremap <leader>t\| :Tabularize /\|<CR>
+
 
 "*********************
 " AUTOCOMMANDS
 "*********************
 
 ""NERDTree
-
-autocmd vimenter * NERDTree
-autocmd vimenter * wincmd l
+autocmd StdinReadPre * let s:std_in=1
+autocmd VimEnter * NERDTree
+autocmd VimEnter * if (argc() != 0 && !isdirectory(argv()[0])) && !exists("s:std_in") | wincmd l | endif
 autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isTabTree()) | q | endif
 
