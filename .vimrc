@@ -41,6 +41,7 @@ Plugin 'kablamo/vim-git-log'
 "" - Language Support -
 Plugin 'valloric/youcompleteme'
 Plugin 'taketwo/vim-ros'
+Plugin 'Conque-GDB'
 
 "" - Themes -
 Plugin 'vim-airline/vim-airline'
@@ -197,11 +198,18 @@ if get(g:, 'elite_mode')
 	nnoremap <silent> <Right> :vertical resize +2<CR>
 endif
 
+" Silver search word under cursor
+nnoremap <leader>ag :Ag <C-R><C-W><CR>
+
 "#For local replace //does not work for function arguments
 nnoremap gr gd[{V%::s/<C-R>///gc<left><left><left>
 nnoremap gR gD:%s/<C-R>///gc<left><left><left>
 " Locally (local to block) rename a variable
 nnoremap <leader>rf "zyiw:call Refactor()<CR>mx:silent! norm gd<CR>[{V%:s/<C-R>//<c-r>z/g<CR>`x}]'")
+" Removing trailing WS
+nnoremap <silent> <leader>rt :let _s=@/ <Bar> :%s/\s\+$//e <Bar> :let @/=_s <Bar> :nohl <Bar> :unlet _s <CR>
+" Indenting
+nnoremap <silent> <leader>is [{v]}==<C-o><C-o><C-o>
 
 nnoremap <leader>h :set hlsearch!<CR>
 nnoremap <leader>H :set cursorline! hlsearch!<CR>
@@ -232,14 +240,14 @@ nnoremap <F9> :YcmCompleter FixIt<CR>
 
 "" - cu -
 
-noremap <Leader>tb= :Tabularize  /=<CR>
-noremap <Leader>tb: :Tabularize  /:\zs<CR>
-noremap <Leader>tb, :Tabularize  /,\zs<CR>
-noremap <leader>t{ :Tabularize /{<CR>
-noremap <leader>t" :Tabularize /"<CR>
-noremap <leader>t' :Tabularize /'<CR>
-noremap <leader>t[ :Tabularize /[<CR>
-noremap <leader>t/ :Tabularize ///<CR>
+noremap <Leader>tb= :Tabularize /=<CR>
+noremap <Leader>tb: :Tabularize /:\zs<CR>
+noremap <Leader>tb, :Tabularize /,\zs<CR>
+noremap <leader>t{  :Tabularize /{<CR>
+noremap <leader>t"  :Tabularize /"<CR>
+noremap <leader>t'  :Tabularize /'<CR>
+noremap <leader>t[  :Tabularize /[<CR>
+noremap <leader>t/  :Tabularize ///<CR>
 noremap <leader>t\| :Tabularize /\|<CR>
 
 
