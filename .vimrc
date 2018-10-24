@@ -40,12 +40,12 @@ Plugin 'kablamo/vim-git-log'
 
 "" - Language Support -
 Plugin 'valloric/youcompleteme'
-Plugin 'taketwo/vim-ros'
+Plugin 'taketwo/vim-ros'                    " sudo apt-get install vim-nox-py2
 
 "" - Themes -
 Plugin 'vim-airline/vim-airline'
 Plugin 'vim-airline/vim-airline-themes'
-Plugin 'ryanoasis/vim-devicons'
+Plugin 'ryanoasis/vim-devicons'             " https://github.com/ryanoasis/nerd-fonts#font-installation
 
 " All of your Plugins must be added before the following line
 call vundle#end()            " required
@@ -163,7 +163,7 @@ let g:ycm_autoclose_preview_window_after_insertion = 1
 let g:ycm_error_symbol = '✗'
 let g:ycm_warning_symbol = '⚠'
 
-""" vim-ros
+""" ycm+vim-ros
 let g:ycm_semantic_triggers = {
 			\   'roslaunch' : ['="', '$(', '/'],
 			\   'rosmsg,rossrv,rosaction' : ['re!^', '/'],
