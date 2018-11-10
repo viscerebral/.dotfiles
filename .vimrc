@@ -17,7 +17,6 @@ Plugin 'VundleVim/Vundle.vim'
 
 "" - Utilities -
 Plugin 'sjl/gundo.vim'
-Plugin 'jeetsukumaran/vim-buffergator'
 
 "" - Utility exploration/search -
 Plugin 'rking/ag.vim'
@@ -28,9 +27,9 @@ Plugin 'gilsondev/searchtasks.vim'
 
 "" - Formatting and autofill -
 Plugin 'godlygeek/tabular'
-Plugin 'townk/vim-autoclose'
-Plugin 'tomtom/tcomment_vim'
+Plugin 'scrooloose/nerdcommenter'
 Plugin 'tpope/tpope-vim-abolish'
+Plugin 'tpope/vim-surround'
 
 "" - Git Support -
 Plugin 'tpope/vim-fugitive'
@@ -58,15 +57,15 @@ filetype plugin indent on    " required
 "*********************
 
 function! CtagsGitPath()
-	let git_path = split(system('git rev-parse --show-toplevel'),"\n")
-	if v:shell_error == 0 && len(git_path) == 1
-		let tags_file = git_path[0] . '/.git/tags '
-		let tmp = system('ctags -R --extra=f -f ' . tags_file . git_path[0])
-		echo 'tags generated to ' . tags_file 
-	else
-		let tmp = system('ctags -R *')
-		echo 'no git repo, tags generated locally'
-	endif
+    let git_path = split(system('git rev-parse --show-toplevel'),"\n")
+    if v:shell_error == 0 && len(git_path) == 1
+        let tags_file = git_path[0] . '/.git/tags '
+        let tmp = system('ctags -R --extra=f -f ' . tags_file . git_path[0])
+        echo 'tags generated to ' . tags_file
+    else
+        let tmp = system('ctags -R *')
+        echo 'no git repo, tags generated locally'
+    endif
 endfunction
 
 
@@ -100,7 +99,7 @@ set shiftwidth=4
 set smarttab
 set expandtab
 
-"" Theme and Styling 
+"" Theme and Styling
 set t_Co=256
 set background=dark
 "set guifont"Hack:h11"
@@ -126,12 +125,12 @@ set number
 set ruler
 
 if v:version > 703
-	set number relativenumber
+    set number relativenumber
 endif
 
 
 "********************
-" LET 
+" LET
 "********************
 
 "#Enable Elite mode, No Arrow keys for movement
@@ -142,7 +141,7 @@ let mapleader=","
 
 " Vim-Airline Configuration
 let g:airline#extensions#tabline#enabled = 1
-let g:airline_powerline_fonts = 1 
+let g:airline_powerline_fonts = 1
 let g:airline_theme='luna'
 let g:hybrid_custom_term_colors = 1
 let g:hybrid_reduced_contrast = 1
@@ -166,9 +165,9 @@ let g:ycm_warning_symbol = '⚠'
 
 """ ycm+vim-ros
 let g:ycm_semantic_triggers = {
-			\   'roslaunch' : ['="', '$(', '/'],
-			\   'rosmsg,rossrv,rosaction' : ['re!^', '/'],
-			\ }
+            \   'roslaunch' : ['="', '$(', '/'],
+            \   'rosmsg,rossrv,rosaction' : ['re!^', '/'],
+            \ }
 
 ""Gundo
 "let g:gundo_prefer_python3 = 1
@@ -179,23 +178,17 @@ let g:ycm_semantic_triggers = {
 "*********************
 
 " -- insert mode --
-
-inoremap jw <Esc>
-inoremap wj <Esc>
 inoremap ii <Esc>
-inoremap <C-L> <Esc>
-inoremap <S-Space> <Esc>
-inoremap <C-d> <Esc>ddi
 
 " -- normal mode --
 
 "#Disable arrow movement, resize splits instead.
 if get(g:, 'elite_mode')
     nnoremap <silent> <Up>    :resize -2<CR>
-	nnoremap <silent> <Down>  :resize +2<CR>
+    nnoremap <silent> <Down>  :resize +2<CR>
     """nnoremap  <expr> <Left> HasWinToRight() == 0 ? ' :vertical resize -2<CR>' : 'vertical resize +2'
-	nnoremap <silent> <Left> :vertical resize -2<CR>
-	nnoremap <silent> <Right> :vertical resize +2<CR>
+    nnoremap <silent> <Left> :vertical resize -2<CR>
+    nnoremap <silent> <Right> :vertical resize +2<CR>
 endif
 
 " Silver search word under cursor
@@ -207,20 +200,23 @@ nnoremap gR gD:%s/<C-R>///gc<left><left><left>
 " Locally (local to block) rename a variable
 nnoremap <leader>rf "zyiw:call Refactor()<CR>mx:silent! norm gd<CR>[{V%:s/<C-R>//<c-r>z/g<CR>`x}]'")
 " Removing trailing WS
-nnoremap <silent> <leader>rt :let _s=@/ <Bar> :%s/\s\+$//e <Bar> :let @/=_s <Bar> :nohl <Bar> :unlet _s <CR>
+nnoremap <leader>rt :let _s=@/ <Bar> :%s/\s\+$//e <Bar> :let @/=_s <Bar> :nohl <Bar> :unlet _s <CR>
 " Indenting
-nnoremap <silent> <leader>is [{v]}==<C-o><C-o><C-o>
+nnoremap <leader>is [{v]}==<C-o><C-o><C-o>
 
 nnoremap <leader>h :set hlsearch!<CR>
 nnoremap <leader>H :set cursorline! hlsearch!<CR>
 
 nnoremap gln :lnext<CR>
 nnoremap glp :lprevious<CR>
+nnoremap glo :lopen<CR>
+nnoremap glc :lclose<CR>
 nnoremap <F4> :make<CR>
 nnoremap <F5> :GundoToggle<CR>
 nnoremap <F7> :call CtagsGitPath()<CR>
 "# nnoremap <F8> :TagbarToggle<CR>
 "# nnoremap <F9> :YcmCompleter FixIt<CR>
+"# nnoremap <F12> :YcmCompleter GoToDefinition<CR>
 
 "" - NERDTree -
 nnoremap <C-n> :NERDTreeToggle<CR>
@@ -234,21 +230,29 @@ nnoremap <F8> :TagbarToggle<CR>
 
 "" - YCM -
 nnoremap <F9> :YcmCompleter FixIt<CR>
+nnoremap <F12> :YcmCompleter GoToDefinition<CR>
 
+"" - fugitive - (@:Gdiff)
+"""" nnoremap d2 :diffget //2<Bar>diffupdate<Bar>]c<CR>
+"""" nnoremap d3 :diffget //3<Bar>diffupdate<Bar>]c<CR>
+
+"" - SearchTasks -
+nnoremap <leader>st :SearchTasks .<CR>
 
 " -- visual mode --
 
 "" - cu -
 
-noremap <Leader>tb= :Tabularize /=<CR>
-noremap <Leader>tb: :Tabularize /:\zs<CR>
-noremap <Leader>tb, :Tabularize /,\zs<CR>
+noremap <Leader>t=  :Tabularize /=<CR>
+noremap <Leader>t:  :Tabularize /:\zs<CR>
+noremap <Leader>t,  :Tabularize /,\zs<CR>
 noremap <leader>t{  :Tabularize /{<CR>
 noremap <leader>t"  :Tabularize /"<CR>
 noremap <leader>t'  :Tabularize /'<CR>
 noremap <leader>t[  :Tabularize /[<CR>
 noremap <leader>t/  :Tabularize ///<CR>
 noremap <leader>t\| :Tabularize /\|<CR>
+noremap <leader>t/* :Tabularize //\*/l1c0l0<CR>
 
 
 "*********************
