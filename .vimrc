@@ -99,6 +99,8 @@ set shiftwidth=4
 set smarttab
 set expandtab
 
+set diffopt+=iwhite
+
 "" Theme and Styling
 set t_Co=256
 set background=dark
@@ -145,6 +147,9 @@ let g:airline_powerline_fonts = 1
 let g:airline_theme='luna'
 let g:hybrid_custom_term_colors = 1
 let g:hybrid_reduced_contrast = 1
+
+""NERDTree
+let g:NERDTreeQuitOnOpen=1
 
 ""CtrlP
 let g:ctrlp_working_path_mode = 'ra'
@@ -203,6 +208,9 @@ nnoremap <leader>rf "zyiw:call Refactor()<CR>mx:silent! norm gd<CR>[{V%:s/<C-R>/
 nnoremap <leader>rt :let _s=@/ <Bar> :%s/\s\+$//e <Bar> :let @/=_s <Bar> :nohl <Bar> :unlet _s <CR>
 " Indenting
 nnoremap <leader>is [{v]}==<C-o><C-o><C-o>
+
+nnoremap <leader>o o<Esc>k
+nnoremap <leader>O O<Esc>j
 
 nnoremap <leader>h :set hlsearch!<CR>
 nnoremap <leader>H :set cursorline! hlsearch!<CR>
