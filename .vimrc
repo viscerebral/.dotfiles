@@ -210,7 +210,7 @@ nnoremap <leader>rt :let _s=@/ <Bar> :%s/\s\+$//e <Bar> :let @/=_s <Bar> :nohl <
 nnoremap <leader>is [{v]}==<C-o><C-o><C-o>
 
 nnoremap <leader>o o<Esc>k
-nnoremap <leader>O O<Esc>j
+nnoremap <leader>O O<Esc>
 
 nnoremap <leader>h :set hlsearch!<CR>
 nnoremap <leader>H :set cursorline! hlsearch!<CR>
