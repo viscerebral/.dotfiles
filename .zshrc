@@ -46,7 +46,7 @@ ZSH_THEME="agnoster"
 # Uncomment the following line if you want to disable marking untracked files
 # under VCS as dirty. This makes repository status check for large repositories
 # much, much faster.
-# DISABLE_UNTRACKED_FILES_DIRTY="true"
+ DISABLE_UNTRACKED_FILES_DIRTY="true"
 
 # Uncomment the following line if you want to change the command execution time
 # stamp shown in the history command output.
@@ -81,7 +81,7 @@ source $ZSH/oh-my-zsh.sh
  if [[ -n $SSH_CONNECTION ]]; then
    export EDITOR='vim'
  else
-   export EDITOR='mvim'
+   export EDITOR='vim'
  fi
 
 # Compilation flags
@@ -102,7 +102,7 @@ source $ZSH/oh-my-zsh.sh
 export GAZEBO_MODEL_PATH=/home/$USER/catkin_ws/src/automower_sim/am_gazebo/models
 export ROS_WORKSPACE=/home/$USER/catkin_ws_liberty
 
-source /opt/ros/kinetic/setup.zsh
+source /opt/ros/melodic/setup.zsh
 source $ROS_WORKSPACE/devel/setup.sh
 
 export ROSCONSOLE_FORMAT='[${severity}] [${time}]: [${node}] | ${message} | ${function} | ${thread} | ${file} | l:${line}'

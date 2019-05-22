@@ -39,7 +39,7 @@ Plugin 'kablamo/vim-git-log'
 
 "" - Language Support -
 Plugin 'valloric/youcompleteme'
-Plugin 'taketwo/vim-ros'                    " sudo apt-get install vim-nox-py2
+"""Plugin 'taketwo/vim-ros'                    " sudo apt-get install vim-nox-py2
 Plugin 'Conque-GDB'
 
 "" - Themes -
@@ -186,6 +186,16 @@ let g:ycm_semantic_triggers = {
 inoremap ii <Esc>
 
 " -- normal mode --
+
+" Navigate around splits with a single key combo.
+nnoremap <C-l> <C-w><C-l>
+nnoremap <C-h> <C-w><C-h>
+nnoremap <C-k> <C-w><C-k>
+nnoremap <C-j> <C-w><C-j>
+
+" Prevent x from overriding what's in the clipboard.
+noremap x "_x
+noremap X "_X
 
 "#Disable arrow movement, resize splits instead.
 if get(g:, 'elite_mode')
