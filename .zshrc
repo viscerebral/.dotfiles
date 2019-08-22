@@ -14,6 +14,8 @@ ZSH_THEME="powerlevel10k/powerlevel10k"
 ###ZSH_THEME="amuse"
 
 # POWERLEVEL9K settings
+# https://github.com/Powerlevel9k/powerlevel9k/wiki/Stylizing-Your-Prompt
+# https://github.com/Powerlevel9k/powerlevel9k/blob/master/README.md 
 POWERLEVEL9K_MODE='nerdfont-complete'
 #POWERLEVEL9K_SHORTEN_DIR_LENGTH=1
 #POWERLEVEL9K_SHORTEN_DELIMITER=""
@@ -104,6 +106,8 @@ POWERLEVEL9K_BATTERY_LOW_BACKGROUND="clear"
 POWERLEVEL9K_BATTERY_CHARGING_BACKGROUND="clear"
 POWERLEVEL9K_BATTERY_CHARGED_BACKGROUND="clear"
 POWERLEVEL9K_BATTERY_DISCONNECTED_BACKGROUND="clear"
+
+## end of powerlevel9k settings
 
 
 # Set list of themes to pick from when loading at random
