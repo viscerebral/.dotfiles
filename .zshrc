@@ -40,8 +40,18 @@ sourced_ros_target(){
     fi  
 }
 
+mower_connected(){
+    if iwconfig 2>/dev/null | grep -q "SSID:\"Mower";
+    then
+        echo -n "%{%F{029}%}\uf618" # \uf230 is 
+    else
+        echo -n "%{%F{238}%}\uf617" # \uf230 is 
+    fi  
+}
+
+POWERLEVEL9K_CUSTOM_MOWER_CONNECTED="mower_connected"
 POWERLEVEL9K_CUSTOM_ROS_TARGET="sourced_ros_target"
-POWERLEVEL9K_LEFT_PROMPT_ELEMENTS=(os_icon user root_indicator custom_ros_target dir dir_writable_joined vcs)
+POWERLEVEL9K_LEFT_PROMPT_ELEMENTS=(os_icon user root_indicator custom_mower_connected custom_ros_target dir dir_writable_joined vcs)
 POWERLEVEL9K_RIGHT_PROMPT_ELEMENTS=(command_execution_time status background_jobs_joined date time_joined disk_usage ram load battery)
 # os icon
 POWERLEVEL9K_OS_ICON_BACKGROUND="clear"
@@ -53,6 +63,7 @@ POWERLEVEL9K_USER_ROOT_BACKGROUND="clear"
 POWERLEVEL9K_ROOT_INDICATOR_BACKGROUND="red"
 POWERLEVEL9K_ROOT_INDICATOR_FOREGROUND="white"
 # custum
+POWERLEVEL9K_CUSTOM_MOWER_CONNECTED_BACKGROUND="clear"
 POWERLEVEL9K_CUSTOM_ROS_TARGET_BACKGROUND="clear"
 # dir
 POWERLEVEL9K_DIR_HOME_BACKGROUND="clear"
@@ -117,7 +128,7 @@ POWERLEVEL9K_BATTERY_CHARGING_FOREGROUND="purple"
 POWERLEVEL9K_BATTERY_CHARGED_BACKGROUND="clear"
 POWERLEVEL9K_BATTERY_CHARGED_FOREGROUND="green"
 POWERLEVEL9K_BATTERY_DISCONNECTED_BACKGROUND="clear"
-POWERLEVEL9K_BATTERY_DISCONNECTED_FOREGROUND="grey"
+POWERLEVEL9K_BATTERY_DISCONNECTED_FOREGROUND="cyan"
 POWERLEVEL9K_BATTERY_LOW_THRESHOLD=15
 POWERLEVEL9K_BATTERY_VERBOSE=false
 POWERLEVEL9K_BATTERY_STAGES=""
@@ -178,6 +189,8 @@ POWERLEVEL9K_BATTERY_STAGES=""
 # Example format: plugins=(rails git textmate ruby lighthouse)
 # Add wisely, as too many plugins slow down shell startup.
 plugins=(
+  dircycle
+  dirhistory
   git
   sudo
   zsh-autosuggestions
@@ -187,6 +200,8 @@ plugins=(
 source $ZSH/oh-my-zsh.sh
 
 # User configuration
+
+#bindkey -v
 
 # export MANPATH="/usr/local/man:$MANPATH"
 
@@ -214,6 +229,16 @@ source $ZSH/oh-my-zsh.sh
 # Example aliases
 # alias zshconfig="mate ~/.zshrc"
 # alias ohmyzsh="mate ~/.oh-my-zsh"
+#alias -s {yml,yaml}=vim
+#alias -g G='| grep -i'
+#alias ls='ls --color=tty'
+#alias grep='grep  --color=auto --exclude-dir={.bzr,CVS,.git,.hg,.svn}'
+
+
+## Nodejs
+#VERSION=v10.16.3
+#DISTRO=linux-x64
+#export PATH=/usr/local/lib/nodejs/node-$VERSION-$DISTRO/bin:$PATH
 
 export GAZEBO_MODEL_PATH=/home/$USER/catkin_ws/src/automower_sim/am_gazebo/models
 export ROS_WORKSPACE=/home/$USER/catkin_ws_liberty
