@@ -15,7 +15,7 @@ ZSH_THEME="powerlevel10k/powerlevel10k"
 
 # POWERLEVEL9K settings
 # https://github.com/Powerlevel9k/powerlevel9k/wiki/Stylizing-Your-Prompt
-# https://github.com/Powerlevel9k/powerlevel9k/blob/master/README.md 
+# https://github.com/Powerlevel9k/powerlevel9k/blob/master/README.md
 # examples
 # https://github.com/Powerlevel9k/powerlevel9k/wiki/Show-Off-Your-Config
 POWERLEVEL9K_MODE='nerdfont-complete'
@@ -37,16 +37,19 @@ sourced_ros_target(){
         echo -n "%{%F{023}%}\uf00a ROS" # \uf230 is 
     else
         echo -n "%{%F{red}%}\uf00a ROS" # \uf230 is 
-    fi  
+    fi
 }
 
 mower_connected(){
-    if iwconfig 2>/dev/null | grep -q "SSID:\"Mower";
+    if iwconfig 2>/dev/null | grep -q "SSID:\"Automower";
+    then
+        echo -n "%{%F{029}%}\uf618" # \uf230 is 
+    elif iwconfig 2>/dev/null | grep -q "SSID:\"Mower";
     then
         echo -n "%{%F{029}%}\uf618" # \uf230 is 
     else
         echo -n "%{%F{238}%}\uf617" # \uf230 is 
-    fi  
+    fi
 }
 
 POWERLEVEL9K_CUSTOM_MOWER_CONNECTED="mower_connected"
@@ -189,9 +192,12 @@ POWERLEVEL9K_BATTERY_STAGES=""
 # Example format: plugins=(rails git textmate ruby lighthouse)
 # Add wisely, as too many plugins slow down shell startup.
 plugins=(
+  z
+  colored-man-pages
   dircycle
   dirhistory
   git
+  history
   sudo
   zsh-autosuggestions
   zsh-syntax-highlighting

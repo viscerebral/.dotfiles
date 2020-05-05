@@ -119,6 +119,11 @@ if ! shopt -oq posix; then
   fi
 fi
 
+## Nodejs
+#VERSION=v10.16.3
+#DISTRO=linux-x64
+#export PATH=/usr/local/lib/nodejs/node-$VERSION-$DISTRO/bin:$PATH
+
 export GAZEBO_MODEL_PATH=/home/$USER/catkin_ws/src/automower_sim/am_gazebo/models
 export ROS_WORKSPACE=/home/$USER/catkin_ws_liberty
 
