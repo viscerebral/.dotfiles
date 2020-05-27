@@ -21,6 +21,7 @@ Plugin 'sjl/gundo.vim'
 "" - Utility exploration/search -
 Plugin 'rking/ag.vim'
 Plugin 'scrooloose/nerdtree'
+Plugin 'Xuyuanp/nerdtree-git-plugin'
 Plugin 'ctrlpvim/ctrlp.vim'
 Plugin 'majutsushi/tagbar'
 Plugin 'gilsondev/searchtasks.vim'
@@ -121,6 +122,7 @@ highlight CursorLine cterm=NONE ctermbg=235
 
 highlight Search term=reverse ctermfg=0 ctermbg=12 guifg=Black guibg=lightgray
 
+highlight SignColumn guibg=bg ctermbg=black
 highlight GitGutterAdd    guifg=#009900 guibg=bg ctermfg=2 ctermbg=black
 highlight GitGutterChange guifg=#bbbb00 guibg=bg ctermfg=3 ctermbg=black
 highlight GitGutterDelete guifg=#ff2222 guibg=bg ctermfg=1 ctermbg=black
@@ -152,7 +154,7 @@ let mapleader=","
 "" [ Vim-Airline Configuration ]
 let g:airline#extensions#tabline#enabled = 1
 let g:airline_powerline_fonts = 1
-let g:airline_theme='luna'
+let g:airline_theme='base16'
 let g:hybrid_custom_term_colors = 1
 let g:hybrid_reduced_contrast = 1
 
@@ -163,6 +165,12 @@ let g:NERDTreeQuitOnOpen=1
 let g:ctrlp_working_path_mode = 'ra'
 let g:ctrlp_user_command = ['.git', 'cd %s && git ls-files -co --exclude-standard']
 
+"" [ GitGutter ]
+let g:gitgutter_sign_added = ''
+let g:gitgutter_sign_modified = ''
+let g:gitgutter_sign_removed = ''
+let g:gitgutter_sign_removed_first_line = ''
+let g:gitgutter_sign_modified_removed = ''
 
 "" [ coc ]
 "" ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -430,6 +438,7 @@ noremap <leader>t/* :Tabularize //\*/l1c0l0<CR>
 "" [ NERDTree ]
 autocmd StdinReadPre * let s:std_in=1
 autocmd VimEnter * NERDTree
+"autocmd VimEnter * if (argc() == 0 && !exists(“s:std_in”)) | NERDTree | endif
 autocmd VimEnter * if (argc() != 0 && !isdirectory(argv()[0])) && !exists("s:std_in") | wincmd l | endif
 autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isTabTree()) | q | endif
 
