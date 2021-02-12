@@ -1,12 +1,12 @@
 {
-    "coc.preferences.diagnostic.errorSign": "",
-    "coc.preferences.diagnostic.warningSign": "",
+    "diagnostic.errorSign": "",
+    "diagnostic.warningSign": "",
 
-    "git.changedSign.text": "",
-    "git.addedSign.text": "",
-    "git.removedSign.text": "",
-    "git.topRemovedSign.text": "",
-    "git.changeRemovedSign.text": "",
+    "git.changedSign.text": "",
+    "git.addedSign.text": "",
+    "git.removedSign.text": "",
+    "git.topRemovedSign.text": "",
+    "git.changeRemovedSign.text": "",
 
     "git.addedSign.hlGroup": "GitGutterAdd",
     "git.changedSign.hlGroup": "GitGutterChange",

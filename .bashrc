@@ -127,7 +127,7 @@ fi
 export GAZEBO_MODEL_PATH=/home/$USER/catkin_ws/src/automower_sim/am_gazebo/models
 export ROS_WORKSPACE=/home/$USER/catkin_ws_liberty
 
-source /opt/ros/melodic/setup.bash
+source /opt/ros/noetic/setup.bash
 source $ROS_WORKSPACE/devel/setup.sh
 
 export ROSCONSOLE_FORMAT='[${severity}] [${time}]: [${node}] | ${message} | ${function} | ${thread} | ${file} | l:${line}'

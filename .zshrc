@@ -246,11 +246,17 @@ source $ZSH/oh-my-zsh.sh
 #DISTRO=linux-x64
 #export PATH=/usr/local/lib/nodejs/node-$VERSION-$DISTRO/bin:$PATH
 
-export GAZEBO_MODEL_PATH=/home/$USER/catkin_ws/src/automower_sim/am_gazebo/models
+#git config --global alias.lg "log --color --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit"
+alias gitlog="git log --color --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit"
+alias gitlogp="git log --color --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit -p"
+
+export GAZEBO_MODEL_PATH=/home/$USER/catkin_ws_liberty/src/pcnf_automower_sim/am_gazebo/models
 export ROS_WORKSPACE=/home/$USER/catkin_ws_liberty
 
-source /opt/ros/melodic/setup.zsh
+source /opt/ros/noetic/setup.zsh
 source $ROS_WORKSPACE/devel/setup.sh
 
 export ROSCONSOLE_FORMAT='[${severity}] [${time}]: [${node}] | ${message} | ${function} | ${thread} | ${file} | l:${line}'
 export ROS_LANG_DISABLE=genlisp:gennodejs:geneus
+
+export PATH="$HOME/.yarn/bin:$HOME/.config/yarn/global/node_modules/.bin:$PATH"

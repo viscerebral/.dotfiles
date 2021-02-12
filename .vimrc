@@ -21,7 +21,6 @@ Plugin 'sjl/gundo.vim'
 "" - Utility exploration/search -
 Plugin 'rking/ag.vim'
 Plugin 'scrooloose/nerdtree'
-Plugin 'Xuyuanp/nerdtree-git-plugin'
 Plugin 'ctrlpvim/ctrlp.vim'
 Plugin 'majutsushi/tagbar'
 Plugin 'gilsondev/searchtasks.vim'
@@ -38,14 +37,26 @@ Plugin 'gregsexton/gitv'
 Plugin 'airblade/vim-gitgutter'
 Plugin 'kablamo/vim-git-log'
 Plugin 'rbong/vim-flog'
+Plugin 'Xuyuanp/nerdtree-git-plugin'
 
 "" - Language Support -
-"Plugin 'valloric/youcompleteme'
-Plugin 'neoclide/coc.nvim'             " install nodejs, ccls, build projects with: -DCMAKE_EXPORT_COMPILE_COMMANDS=YES ; CocInstall coc-git coc-python coc-json coc-yank coc-calc
+Plugin 'neoclide/coc.nvim', {'branch': 'release'}   
+    "" CoC Install instructions:
+        " install nodejs, ccls, build projects with: -DCMAKE_EXPORT_COMPILE_COMMANDS=YES 
+        " CocInstall coc-git coc-python coc-json coc-yank coc-calc coc-cmake coc-sh
+        " curl --compressed -o- -L https://yarnpkg.com/install.sh | bash ??
+        " :call coc#util#install() (om [coc.nvim] build/index.js not found, please compile the code by esbuild.)
 Plugin 'bash-support.vim'
-"""Plugin 'taketwo/vim-ros'            " sudo apt-get install vim-nox-py2
-Plugin 'Conque-GDB'
+""Plugin 'Conque-GDB' "Obsolete with packadd Termdebug :Termdebug
 Plugin 'suan/vim-instant-markdown', {'rtp': 'after'}   " [sudo] npm -g install instant-markdown-d
+Plugin 'xuqix/h2cppx'
+
+"" - Visual -
+Plugin 'flazz/vim-colorschemes'
+Plugin 'yggdroot/indentline'
+Plugin 'luochen1990/rainbow'
+Plugin 'tiagofumo/vim-nerdtree-syntax-highlight'
+Plugin 'sheerun/vim-polyglot'
 
 "" - Themes -
 Plugin 'vim-airline/vim-airline'
@@ -74,27 +85,24 @@ function! CtagsGitPath()
 endfunction
 
 
-"""function! HasWinToRight()
-"""    let l:rightedge = win_screenpos(0)[1] + winwidth(0) - 1
-"""    for l:win in range(1, winnr('$'))
-"""        if l:win != winnr() && win_screenpos(l:win)[1] > l:rightedge
-"""            return 1
-"""        endif
-"""    endfor
-"""    return 0
-"""endfunction
-
-
-"function! Refactor()
-    "call inputsave()
-    "let @z=input("What do you want to rename '" . @z . "' to? ")
-    "call inputrestore()
-"endfunction
+"*********************
+" EXTERNAL CONFIGS
+"*********************
+"source ~/.vim/config/autoclose.vim
 
 "*********************
-" SET
+" Settings
 "*********************
 syntax on
+
+" Let's save undo info!
+if !isdirectory($HOME."/.vim/undodir")
+    call mkdir($HOME."/.vim/undodir", "p", 0700)
+endif
+set undofile " Maintaing undo history between sessions
+set undodir=~/.vim/undodir
+set undolevels=100         " How many undos
+set undoreload=1000        " number of lines to save for undo
 
 set tabstop=4
 set softtabstop=4
@@ -102,30 +110,44 @@ set shiftwidth=4
 set smarttab
 set expandtab
 
+set backspace=indent,eol,start " backspace over everything in insert mode
+
 set diffopt+=iwhite
 
 "" Theme and Styling
 set t_Co=256
 set background=dark
-"set guifont"Hack:h11"
+""set guifont"Hack:h11"
 set nowrap
 
 set cursorline
 set colorcolumn=120
 set hlsearch
 
-highlight Normal ctermbg=black
-highlight ColorColumn ctermbg=darkgray
+colorscheme deus
 
-highlight ColorColumn ctermbg=235
-highlight CursorLine cterm=NONE ctermbg=235
+""""highlight Normal ctermbg=black
+"highlight Normal ctermbg=235
+""""highlight ColorColumn ctermbg=darkgray
 
-highlight Search term=reverse ctermfg=0 ctermbg=12 guifg=Black guibg=lightgray
+"highlight ColorColumn ctermbg=234
+"highlight CursorLine cterm=NONE ctermbg=234
 
-highlight SignColumn guibg=bg ctermbg=black
-highlight GitGutterAdd    guifg=#009900 guibg=bg ctermfg=2 ctermbg=black
-highlight GitGutterChange guifg=#bbbb00 guibg=bg ctermfg=3 ctermbg=black
-highlight GitGutterDelete guifg=#ff2222 guibg=bg ctermfg=1 ctermbg=black
+"highlight Search term=reverse ctermfg=0 ctermbg=12 guifg=Black guibg=lightgray
+
+highlight SignColumn guibg=bg ctermbg=235
+highlight GitGutterAdd    guibg=bg ctermbg=235
+highlight GitGutterChange guibg=bg ctermbg=235
+highlight GitGutterDelete guibg=bg ctermbg=235
+highlight GitGutterChangeDelete guibg=bg ctermbg=235
+
+"highlight GitGutterAdd    guifg=#009900 guibg=bg ctermfg=2 ctermbg=235
+"highlight GitGutterChange guifg=#bbbb00 guibg=bg ctermfg=3 ctermbg=235
+"highlight GitGutterDelete guifg=#ff2222 guibg=bg ctermfg=1 ctermbg=235
+"""highlight SignColumn guibg=bg ctermbg=black
+"""highlight GitGutterAdd    guifg=#009900 guibg=bg ctermfg=2 ctermbg=black
+"""highlight GitGutterChange guifg=#bbbb00 guibg=bg ctermfg=3 ctermbg=black
+"""highlight GitGutterDelete guifg=#ff2222 guibg=bg ctermfg=1 ctermbg=black
 
 set tags=tags,./tags,./.git/tags;$HOME
 
@@ -136,41 +158,73 @@ set laststatus=2
 set number
 set ruler
 
-if v:version > 703
-    set number relativenumber
-endif
 
-
-"********************
-" LET
-"********************
+let &t_TI = ""
+let &t_TE = ""
 
 "#Enable Elite mode, No Arrow keys for movement
 let g:elite_mode=1
 
 ""leader
 let mapleader=","
+if v:version > 703
+    set number relativenumber
+    highlight CursorLineNr    term=bold cterm=bold gui=bold
+endif
+
+
+"********************
+" Plugin Settings
+"********************
 
 "" [ Vim-Airline Configuration ]
 let g:airline#extensions#tabline#enabled = 1
+let g:airline#extensions#tabline#formatter = 'default'
 let g:airline_powerline_fonts = 1
-let g:airline_theme='base16'
-let g:hybrid_custom_term_colors = 1
-let g:hybrid_reduced_contrast = 1
+let g:airline_theme='deus'
+"let g:hybrid_custom_term_colors = 1
+"let g:hybrid_reduced_contrast = 1
 
 "" [ NERDTree ]
 let g:NERDTreeQuitOnOpen=1
+""" ( NERDTree highlight )
+let g:WebDevIconsDisableDefaultFolderSymbolColorFromNERDTreeDir = 1
+"let g:NERDTreeLimitedSyntax = 1
+"let g:NERDTreeHighlightCursorline = 0
 
 "" [ CtrlP ]
 let g:ctrlp_working_path_mode = 'ra'
 let g:ctrlp_user_command = ['.git', 'cd %s && git ls-files -co --exclude-standard']
 
 "" [ GitGutter ]
-let g:gitgutter_sign_added = ''
-let g:gitgutter_sign_modified = ''
-let g:gitgutter_sign_removed = ''
-let g:gitgutter_sign_removed_first_line = ''
-let g:gitgutter_sign_modified_removed = ''
+let g:gitgutter_sign_added = ''
+let g:gitgutter_sign_modified = ''
+let g:gitgutter_sign_removed = ''
+let g:gitgutter_sign_removed_first_line = ''
+let g:gitgutter_sign_modified_removed = ''
+
+"" [ Gundo ]
+let g:gundo_prefer_python3 = 1
+
+"" [ indentline ]
+let g:indentLine_color_term = 236
+let g:indentLine_char_list = ['┊','┆','¦','|']
+let g:indentLine_bgcolor_term = 235
+let g:indentLine_bgcolor_gui = '#FF0000'
+
+"" [ vim rainbow ]
+let g:rainbow_active = 1
+let g:rainbow_conf = {
+    \	'separately': {
+    \		'nerdtree': 0,
+    \	}
+    \}
+
+"" [ cpp-enhanced-modern ]
+"let g:cpp_no_function_highlight = 1
+"let g:cpp_attributes_highlight = 1
+"let g:cpp_member_highlight = 1
+"let g:cpp_simple_highlight = 1
 
 "" [ coc ]
 "" ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -310,33 +364,11 @@ nmap <Leader>ma <Plug>(coc-calc-result-append)
 " replace result on current expression
 nmap <Leader>mr <Plug>(coc-calc-result-replace)
 
+"let g:coc_force_debug = 1
 "" ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-"" [ youcompleteme ]
-"let g:ycm_global_ycm_extra_conf = '~/.ycm_extra_conf.py'
-"let g:ycm_confirm_extra_conf = 0
-
-"let g:ycm_always_populate_location_list = 1
-"let g:ycm_enable_diagnostic_signs = 1
-
-"let g:ycm_autoclose_preview_window_after_completion = 1
-"let g:ycm_autoclose_preview_window_after_insertion = 1
-
-"let g:ycm_error_symbol = ''
-"let g:ycm_warning_symbol = ''
-
-"""" ycm+vim-ros
-"let g:ycm_semantic_triggers = {
-            "\   'roslaunch' : ['="', '$(', '/'],
-            "\   'rosmsg,rossrv,rosaction' : ['re!^', '/'],
-            "\ }
-
-""Gundo
-let g:gundo_prefer_python3 = 1
-
-
 "*********************
-" MAPPINGS
+" Custom Mappings
 "*********************
 
 " -- insert mode --
@@ -366,12 +398,6 @@ endif
 " [ Ag ] Silver search word under cursor
 nnoremap <leader>ag :Ag <C-R><C-W><CR>
 
-"// replaced with coc's coc-rename <leader>rn
-""#For local replace //does not work for function arguments
-"nnoremap gr gd[{V%::s/<C-R>///gc<left><left><left>
-"nnoremap gR gD:%s/<C-R>///gc<left><left><left>
-"" Locally (local to block) rename a variable
-"nnoremap <leader>rf "zyiw:call Refactor()<CR>mx:silent! norm gd<CR>[{V%:s/<C-R>//<c-r>z/g<CR>`x}]'")
 " Removing trailing WS
 nnoremap <leader>rt :let _s=@/ <Bar> :%s/\s\+$//e <Bar> :let @/=_s <Bar> :nohl <Bar> :unlet _s <CR>
 " Indenting
@@ -390,27 +416,14 @@ nnoremap glc :lclose<CR>
 nnoremap <F4> :make<CR>
 nnoremap <F5> :GundoToggle<CR>
 nnoremap <F7> :call CtagsGitPath()<CR>
-"# nnoremap <F8> :TagbarToggle<CR>
-"# nnoremap <F9> :YcmCompleter FixIt<CR>
-"# nnoremap <F12> :YcmCompleter GoToDefinition<CR>
+nnoremap <F8> :TagbarToggle<CR>
 
 "" [ NERDTree ]
 nnoremap <C-n> :NERDTreeToggle<CR>
 
 "" [ CtrlP ]
 nnoremap <leader>. :CtrlPTag<CR>
-nnoremap <C-b> :CtrlPBuffer<CR>
-
-"" [ TagBar ]
-nnoremap <F8> :TagbarToggle<CR>
-
-""" [ YCM ]
-"nnoremap <F9> :YcmCompleter FixIt<CR>
-"nnoremap <F12> :YcmCompleter GoToDefinition<CR>
-
-"" [ fugitive ] (@:Gdiff)
-"""" nnoremap d2 :diffget //2<Bar>diffupdate<Bar>]c<CR>
-"""" nnoremap d3 :diffget //3<Bar>diffupdate<Bar>]c<CR>
+nnoremap <leader>b :CtrlPBuffer<CR>
 
 "" [ SearchTasks ]
 nnoremap <leader>st :SearchTasks .<CR>
@@ -435,12 +448,13 @@ noremap <leader>t/* :Tabularize //\*/l1c0l0<CR>
 " AUTOCOMMANDS
 "*********************
 
+autocmd Filetype cpp TagbarOpen
+"autocmd FileType c,cpp,objc,objcpp call rainbow#load()
+autocmd BufEnter *.launch :setlocal filetype=xml
+
 "" [ NERDTree ]
 autocmd StdinReadPre * let s:std_in=1
 autocmd VimEnter * NERDTree
-"autocmd VimEnter * if (argc() == 0 && !exists(“s:std_in”)) | NERDTree | endif
 autocmd VimEnter * if (argc() != 0 && !isdirectory(argv()[0])) && !exists("s:std_in") | wincmd l | endif
 autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isTabTree()) | q | endif
-
-autocmd Filetype cpp TagbarOpen
 
