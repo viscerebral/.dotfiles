@@ -33,7 +33,12 @@
             "initializationOptions": {
                 "cache": {
                     "directory": "/tmp/ccls"
-                }
+                },
+                "highlight": { 
+                    "lsRanges" : true 
+                },
+                "index": { "onChange": true },
+                "client": { "snippetSupport": true }
             }
         },
         "bash": {

@@ -48,6 +48,7 @@ Plugin 'neoclide/coc.nvim', {'branch': 'release'}
         " :call coc#util#install() (om [coc.nvim] build/index.js not found, please compile the code by esbuild.)
 Plugin 'bash-support.vim'
 ""Plugin 'Conque-GDB' "Obsolete with packadd Termdebug :Termdebug
+Plugin 'cpiger/neodebug'
 Plugin 'suan/vim-instant-markdown', {'rtp': 'after'}   " [sudo] npm -g install instant-markdown-d
 Plugin 'xuqix/h2cppx'
 
@@ -56,7 +57,8 @@ Plugin 'flazz/vim-colorschemes'
 Plugin 'yggdroot/indentline'
 Plugin 'luochen1990/rainbow'
 Plugin 'tiagofumo/vim-nerdtree-syntax-highlight'
-Plugin 'sheerun/vim-polyglot'
+"Plugin 'sheerun/vim-polyglot'
+Plugin 'jackguo380/vim-lsp-cxx-highlight'
 
 "" - Themes -
 Plugin 'vim-airline/vim-airline'
@@ -71,6 +73,10 @@ filetype plugin indent on    " required
 "*********************
 " Funcions
 "*********************
+function TrimWhiteSpace()
+  %s/\s*$//
+  ''
+endfunction
 
 function! CtagsGitPath()
     let git_path = split(system('git rev-parse --show-toplevel'),"\n")
@@ -225,6 +231,11 @@ let g:rainbow_conf = {
 "let g:cpp_attributes_highlight = 1
 "let g:cpp_member_highlight = 1
 "let g:cpp_simple_highlight = 1
+
+"  vim-lsp-cxx-highlight
+let g:cpp_class_scope_highlight = 1
+let g:cpp_member_variable_highlight = 1
+let g:cpp_class_decl_highlight = 1
 
 "" [ coc ]
 "" ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -448,13 +459,16 @@ noremap <leader>t/* :Tabularize //\*/l1c0l0<CR>
 " AUTOCOMMANDS
 "*********************
 
-autocmd Filetype cpp TagbarOpen
-"autocmd FileType c,cpp,objc,objcpp call rainbow#load()
-autocmd BufEnter *.launch :setlocal filetype=xml
-
-"" [ NERDTree ]
-autocmd StdinReadPre * let s:std_in=1
 autocmd VimEnter * NERDTree
 autocmd VimEnter * if (argc() != 0 && !isdirectory(argv()[0])) && !exists("s:std_in") | wincmd l | endif
-autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isTabTree()) | q | endif
+
+autocmd Filetype cpp TagbarOpen
+"autocmd FileType c,cpp,objc,objcpp call rainbow#load()
+
+autocmd BufEnter *.launch :setlocal filetype=xml
+autocmd BufEnter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isTabTree()) | q | endif
+
+autocmd BufWritePre *.c,*.cpp,*.cc,*.h,*.hpp,*.py,*.m,*.mm :%s/\s\+$//e
+
+autocmd StdinReadPre * let s:std_in=1
 
