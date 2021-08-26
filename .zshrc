@@ -32,12 +32,22 @@ POWERLEVEL9K_MULTILINE_LAST_PROMPT_PREFIX="%F{blue}\u2570\uf460%F{white} "
 
 # - POWERLEVEL9K custom
 sourced_ros_target(){
-    if [[ "${ROS_MASTER_URI}" == *"localhost"* ]] || [[ "${ROS_MASTER_URI}" == *"127\.0\.0\.1"* ]];
+ROS_STRING=ROS
+    if [[ ${ROS_VERSION} -eq 2 ]];
     then
-        echo -n "%{%F{023}%}\uf00a ROS" # \uf230 is 
+        echo -n "%{%F{097}%}\uf00a ROS2" # \uf230 is  008 darkgrey
+    elif [[ -n ${ROS_MASTER_URI} ]];
+    then
+        if [[ "${ROS_MASTER_URI}" == *"localhost"* ]] || [[ "${ROS_MASTER_URI}" == *"127\.0\.0\.1"* ]];
+        then
+            echo -n "%{%F{028}%}\uf00a ROS" # \uf230 is  028 green
+        else
+            echo -n "%{%F{031}%}\uf00a ROS" # \uf230 is  031 blue
+        fi
     else
-        echo -n "%{%F{red}%}\uf00a ROS" # \uf230 is 
+        echo -n "%{%F{008}%}\uf00a ROS" # \uf230 is  008 darkgrey
     fi
+
 }
 
 mower_connected(){
@@ -250,13 +260,31 @@ source $ZSH/oh-my-zsh.sh
 alias gitlog="git log --color --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit"
 alias gitlogp="git log --color --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit -p"
 
-export GAZEBO_MODEL_PATH=/home/$USER/catkin_ws_liberty/src/pcnf_automower_sim/am_gazebo/models
-export ROS_WORKSPACE=/home/$USER/catkin_ws_liberty
 
-source /opt/ros/noetic/setup.zsh
-source $ROS_WORKSPACE/devel/setup.sh
+USE_ROS_VERSION=1
+if [[ ${USE_ROS_VERSION} -eq 2 ]];
+then
+    export ROS_WORKSPACE=/home/$USER/colcon_ws
 
-export ROSCONSOLE_FORMAT='[${severity}] [${time}]: [${node}] | ${message} | ${function} | ${thread} | ${file} | l:${line}'
-export ROS_LANG_DISABLE=genlisp:gennodejs:geneus
+    source /opt/ros/foxy/setup.zsh
+    source $ROS_WORKSPACE/devel/setup.zsh
+
+    source /usr/share/colcon_cd/function/colcon_cd.sh
+    export _colcon_cd_root=${ROS_WORKSPACE}
+
+
+elif [[ ${USE_ROS_VERSION} -eq 1 ]];
+then
+    export ROS_WORKSPACE=/home/$USER/catkin_ws_liberty
+
+    source /opt/ros/noetic/setup.zsh
+    source $ROS_WORKSPACE/devel/setup.zsh
+
+    export ROSCONSOLE_FORMAT='[${severity}] [${time}]: [${node}] | ${message} | ${function} | ${thread} | ${file} | l:${line}'
+    export ROS_LANG_DISABLE=genlisp:gennodejs:geneus
+
+    export GAZEBO_MODEL_PATH=/home/$USER/catkin_ws_liberty/src/pcnf_automower_sim/am_gazebo/models
+fi
+
 
 export PATH="$HOME/.yarn/bin:$HOME/.config/yarn/global/node_modules/.bin:$PATH"

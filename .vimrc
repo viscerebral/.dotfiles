@@ -49,7 +49,7 @@ Plugin 'neoclide/coc.nvim', {'branch': 'release'}
 Plugin 'bash-support.vim'
 ""Plugin 'Conque-GDB' "Obsolete with packadd Termdebug :Termdebug
 Plugin 'cpiger/neodebug'
-Plugin 'suan/vim-instant-markdown', {'rtp': 'after'}   " [sudo] npm -g install instant-markdown-d
+"Plugin 'suan/vim-instant-markdown', {'rtp': 'after'}   " [sudo] npm -g install instant-markdown-d
 Plugin 'xuqix/h2cppx'
 
 "" - Visual -
@@ -59,6 +59,7 @@ Plugin 'luochen1990/rainbow'
 Plugin 'tiagofumo/vim-nerdtree-syntax-highlight'
 "Plugin 'sheerun/vim-polyglot'
 Plugin 'jackguo380/vim-lsp-cxx-highlight'
+Plugin 'unblevable/quick-scope'
 
 "" - Themes -
 Plugin 'vim-airline/vim-airline'
@@ -105,6 +106,9 @@ syntax on
 if !isdirectory($HOME."/.vim/undodir")
     call mkdir($HOME."/.vim/undodir", "p", 0700)
 endif
+
+set vb t_vb=
+
 set undofile " Maintaing undo history between sessions
 set undodir=~/.vim/undodir
 set undolevels=100         " How many undos
@@ -236,6 +240,15 @@ let g:rainbow_conf = {
 let g:cpp_class_scope_highlight = 1
 let g:cpp_member_variable_highlight = 1
 let g:cpp_class_decl_highlight = 1
+
+" quick-scope
+let g:qs_highlight_on_keys = ['f', 'F', 't', 'T']
+
+highlight QuickScopePrimary guifg='#afff5f' gui=underline ctermfg=159 cterm=underline
+highlight QuickScopeSecondary guifg='#5fffff' gui=underline ctermfg=193 cterm=underline
+
+nmap <leader>q <plug>(QuickScopeToggle)
+xmap <leader>q <plug>(QuickScopeToggle)
 
 "" [ coc ]
 "" ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -374,6 +387,9 @@ nnoremap <silent> <space>y  :<C-u>CocList -A --normal yank<cr>
 nmap <Leader>ma <Plug>(coc-calc-result-append)
 " replace result on current expression
 nmap <Leader>mr <Plug>(coc-calc-result-replace)
+
+"" [[[ coc-prettier ]]]
+"command! -nargs=0 Prettier :CocCommand prettier.formatFile
 
 "let g:coc_force_debug = 1
 "" ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
