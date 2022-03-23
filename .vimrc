@@ -17,6 +17,8 @@ Plugin 'VundleVim/Vundle.vim'
 
 "" - Utilities -
 Plugin 'sjl/gundo.vim'
+Plugin 'liuchengxu/vim-which-key'
+Plugin 'junegunn/vim-peekaboo'
 
 "" - Utility exploration/search -
 Plugin 'rking/ag.vim'
@@ -57,9 +59,10 @@ Plugin 'flazz/vim-colorschemes'
 Plugin 'yggdroot/indentline'
 Plugin 'luochen1990/rainbow'
 Plugin 'tiagofumo/vim-nerdtree-syntax-highlight'
-"Plugin 'sheerun/vim-polyglot'
+"Plugin 'sheerun/vim-polyglot' ??
 Plugin 'jackguo380/vim-lsp-cxx-highlight'
 Plugin 'unblevable/quick-scope'
+Plugin 'ojroques/vim-scrollstatus'
 
 "" - Themes -
 Plugin 'vim-airline/vim-airline'
@@ -74,6 +77,18 @@ filetype plugin indent on    " required
 "*********************
 " Funcions
 "*********************
+function ProfilingStart()
+    :profile start profile.log
+    :profile func *
+    :profile file *
+endfunction
+
+function ProfilingStop()
+    :profile pause
+    :noautocmd qall!
+endfunction
+
+
 function TrimWhiteSpace()
   %s/\s*$//
   ''
@@ -107,6 +122,8 @@ if !isdirectory($HOME."/.vim/undodir")
     call mkdir($HOME."/.vim/undodir", "p", 0700)
 endif
 
+set autoread
+
 set vb t_vb=
 
 set undofile " Maintaing undo history between sessions
@@ -114,6 +131,7 @@ set undodir=~/.vim/undodir
 set undolevels=100         " How many undos
 set undoreload=1000        " number of lines to save for undo
 
+"" Filetype dependent setting in the autocommand section
 set tabstop=4
 set softtabstop=4
 set shiftwidth=4
@@ -192,6 +210,7 @@ let g:airline#extensions#tabline#enabled = 1
 let g:airline#extensions#tabline#formatter = 'default'
 let g:airline_powerline_fonts = 1
 let g:airline_theme='deus'
+let g:airline_section_x = '%{ScrollStatus()}'
 "let g:hybrid_custom_term_colors = 1
 "let g:hybrid_reduced_contrast = 1
 
@@ -200,7 +219,14 @@ let g:NERDTreeQuitOnOpen=1
 """ ( NERDTree highlight )
 let g:WebDevIconsDisableDefaultFolderSymbolColorFromNERDTreeDir = 1
 "let g:NERDTreeLimitedSyntax = 1
+
 "let g:NERDTreeHighlightCursorline = 0
+"set lazyredraw
+
+"" [ NERDCommenter ]
+let g:NERDSpaceDelims = 1
+let g:NERDDefaultAlign = 'left'
+let g:NERDTrimTrailingWhitespace = 1
 
 "" [ CtrlP ]
 let g:ctrlp_working_path_mode = 'ra'
@@ -403,6 +429,9 @@ inoremap ii <Esc>
 
 " -- normal mode --
 
+" go to next capital letter or number
+noremap <leader>C /[A-Z0-9]<CR>
+
 " Navigate around splits with a single key combo.
 nnoremap <C-l> <C-w><C-l>
 nnoremap <C-h> <C-w><C-h>
@@ -440,10 +469,35 @@ nnoremap gln :lnext<CR>
 nnoremap glp :lprevious<CR>
 nnoremap glo :lopen<CR>
 nnoremap glc :lclose<CR>
-nnoremap <F4> :make<CR>
-nnoremap <F5> :GundoToggle<CR>
-nnoremap <F7> :call CtagsGitPath()<CR>
-nnoremap <F8> :TagbarToggle<CR>
+nnoremap <leader><F4> :make<CR>
+nnoremap <leader><F5> :GundoToggle<CR>
+nnoremap <leader><F7> :call CtagsGitPath()<CR>
+nnoremap <leader><F8> :TagbarToggle<CR>
+
+nnoremap <silent> gg gg
+nnoremap <silent> gv gv
+nnoremap <silent> [{ [{
+nnoremap <silent> ]} ]}
+nnoremap <silent> [( [(
+nnoremap <silent> ]) ])
+nnoremap <silent> [m [m
+nnoremap <silent> ]m ]m
+nnoremap <silent> [M [M
+nnoremap <silent> ]M ]M
+nnoremap <silent> <leader> :<c-u>WhichKey ','<CR>
+nnoremap <silent> <space> :WhichKey '<Space>'<CR>
+nnoremap <silent> g :WhichKey 'g'<CR>
+nnoremap <silent> ] :WhichKey ']'<CR>
+nnoremap <silent> [ :WhichKey '['<CR>
+" nnoremap <silent> } :WhichKey '}'<CR>
+" nnoremap <silent> { :WhichKey '{'<CR>
+
+let g:which_key_map = {}
+"let g:which_key_map.g.g = 'top of file'
+"let g:which_key_vertical = 1
+
+
+set timeoutlen=500
 
 "" [ NERDTree ]
 nnoremap <C-n> :NERDTreeToggle<CR>
@@ -459,9 +513,10 @@ nnoremap <leader>st :SearchTasks .<CR>
 
 "" - cu -
 
-noremap <Leader>t=  :Tabularize /=<CR>
-noremap <Leader>t:  :Tabularize /:\zs<CR>
-noremap <Leader>t,  :Tabularize /,\zs<CR>
+"" [ Tabularize ]
+noremap <leader>t=  :Tabularize /=<CR>
+noremap <leader>t:  :Tabularize /:\zs<CR>
+noremap <leader>t,  :Tabularize /,\zs<CR>
 noremap <leader>t{  :Tabularize /{<CR>
 noremap <leader>t"  :Tabularize /"<CR>
 noremap <leader>t'  :Tabularize /'<CR>
@@ -470,16 +525,25 @@ noremap <leader>t/  :Tabularize ///<CR>
 noremap <leader>t\| :Tabularize /\|<CR>
 noremap <leader>t/* :Tabularize //\*/l1c0l0<CR>
 
+"" [ vim-surround ]
+nnoremap <leader>sa' :execute "normal \<Plug>Ysurroundiw'"<cr>
+nnoremap <leader>sa" :execute "normal \<Plug>Ysurroundiw\""<cr>
+nnoremap <leader>sa) :execute "normal \<Plug>Ysurroundiw)"<cr>
+nnoremap <leader>sa] :execute "normal \<Plug>Ysurroundiw]"<cr>
+nnoremap <leader>sa} :execute "normal \<Plug>Ysurroundiw}"<cr>
 
 "*********************
 " AUTOCOMMANDS
 "*********************
 
+autocmd FileType python set tabstop=4|set shiftwidth=4|set expandtab
+autocmd FileType c,cpp,h,hpp set tabstop=2|set shiftwidth=2|set expandtab
+autocmd Filetype c,cpp TagbarOpen
+"autocmd FileType c,cpp,objc,objcpp call rainbow#load()
+
+autocmd FocusGained,BufEnter * :checktime
 autocmd VimEnter * NERDTree
 autocmd VimEnter * if (argc() != 0 && !isdirectory(argv()[0])) && !exists("s:std_in") | wincmd l | endif
-
-autocmd Filetype cpp TagbarOpen
-"autocmd FileType c,cpp,objc,objcpp call rainbow#load()
 
 autocmd BufEnter *.launch :setlocal filetype=xml
 autocmd BufEnter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isTabTree()) | q | endif
