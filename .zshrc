@@ -31,26 +31,7 @@ POWERLEVEL9K_MULTILINE_FIRST_PROMPT_PREFIX="%F{blue}\u256D\u2500%F{white}"
 POWERLEVEL9K_MULTILINE_LAST_PROMPT_PREFIX="%F{blue}\u2570\uf460%F{white} "
 
 # - POWERLEVEL9K custom
-sourced_ros_target(){
-ROS_STRING=ROS
-    if [[ ${ROS_VERSION} -eq 2 ]];
-    then
-        echo -n "%{%F{097}%}\uf00a ROS2" # \uf230 is  008 darkgrey
-    elif [[ -n ${ROS_MASTER_URI} ]];
-    then
-        if [[ "${ROS_MASTER_URI}" == *"localhost"* ]] || [[ "${ROS_MASTER_URI}" == *"127\.0\.0\.1"* ]];
-        then
-            echo -n "%{%F{028}%}\uf00a ROS" # \uf230 is  028 green
-        else
-            echo -n "%{%F{031}%}\uf00a ROS" # \uf230 is  031 blue
-        fi
-    else
-        echo -n "%{%F{008}%}\uf00a ROS" # \uf230 is  008 darkgrey
-    fi
-
-}
-
-mower_connected(){
+_mower_connected(){
     if iwconfig 2>/dev/null | grep -q "SSID:\"Automower";
     then
         echo -n "%{%F{029}%}\uf618" # \uf230 is 
@@ -62,8 +43,37 @@ mower_connected(){
     fi
 }
 
-POWERLEVEL9K_CUSTOM_MOWER_CONNECTED="mower_connected"
-POWERLEVEL9K_CUSTOM_ROS_TARGET="sourced_ros_target"
+_sourced_ros_target(){
+ROS_STRING=ROS
+    if [[ ${ROS_VERSION} -eq 2 ]];
+    then
+      if [[ -n ${PROJECT_NAME} ]];
+      then
+        echo -n "%{%F{097}%}\uf00a ROS2 (${PROJECT_NAME})" # \uf230 is  008 darkgrey
+      elif [[ -n ${ROS_WORKSPACE} ]];
+      then
+        echo -n "%{%F{097}%}\uf00a ROS2 ($(basename ${ROS_WORKSPACE}))" # \uf230 is  008 darkgrey
+      else
+        echo -n "%{%F{097}%}\uf00a ROS2 " # \uf230 is  008 darkgrey
+      fi
+    elif [[ -n ${ROS_MASTER_URI} ]];
+    then
+        if [[ "${ROS_MASTER_URI}" == *"localhost"* ]] || [[ "${ROS_MASTER_URI}" == *"127\.0\.0\.1"* ]];
+        then
+            echo -n "%{%F{028}%}\uf00a ROS ($(basename ${ROS_WORKSPACE}))" # \uf230 is  028 green
+        else
+            echo -n "%{%F{031}%}\uf00a ROS ($(basename ${ROS_WORKSPACE}))" # \uf230 is  031 blue
+        fi
+    elif [[ -n ${ROS_WORKSPACE} ]];
+    then
+        echo -n "%{%F{008}%}\uf00a ROS ${ROS_WORKSPACE}))" # \uf230 is  008 darkgrey
+    else
+        echo -n "%{%F{008}%}\uf00a ROS" # \uf230 is  008 darkgrey
+    fi
+}
+
+POWERLEVEL9K_CUSTOM_MOWER_CONNECTED="_mower_connected"
+POWERLEVEL9K_CUSTOM_ROS_TARGET="_sourced_ros_target"
 POWERLEVEL9K_LEFT_PROMPT_ELEMENTS=(os_icon user root_indicator custom_mower_connected custom_ros_target dir dir_writable_joined vcs)
 POWERLEVEL9K_RIGHT_PROMPT_ELEMENTS=(command_execution_time status background_jobs_joined date time_joined disk_usage ram load battery)
 # os icon
@@ -243,38 +253,45 @@ source $ZSH/oh-my-zsh.sh
 # For a full list of active aliases, run `alias`.
 #
 # Example aliases
-# alias zshconfig="mate ~/.zshrc"
+alias zshconfig="vim ~/.zshrc"
 # alias ohmyzsh="mate ~/.oh-my-zsh"
 #alias -s {yml,yaml}=vim
 #alias -g G='| grep -i'
 #alias ls='ls --color=tty'
 #alias grep='grep  --color=auto --exclude-dir={.bzr,CVS,.git,.hg,.svn}'
 
+alias gitlog="git log --color --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset %C(bold #262680)<%cn>%Creset' --abbrev-commit"
+alias gitlogp="git log --color --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset %C(bold #262680)<%cn>%Creset' --abbrev-commit -p"
 
 ## Nodejs
 #VERSION=v10.16.3
 #DISTRO=linux-x64
 #export PATH=/usr/local/lib/nodejs/node-$VERSION-$DISTRO/bin:$PATH
 
-#git config --global alias.lg "log --color --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit"
-alias gitlog="git log --color --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit"
-alias gitlogp="git log --color --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit -p"
+export ROS_DOMAIN_ID=23
 
-
-USE_ROS_VERSION=1
-if [[ ${USE_ROS_VERSION} -eq 2 ]];
-then
+## terminal functions
+function source_tad_ros2()
+{
     export ROS_WORKSPACE=/home/$USER/colcon_ws
 
     source /opt/ros/foxy/setup.zsh
-    source $ROS_WORKSPACE/devel/setup.zsh
+    #source $ROS_WORKSPACE/devel/setup.zsh
+    source /opt/ros/foxy/share/ros2cli/environment/ros2-argcomplete.zsh
 
     source /usr/share/colcon_cd/function/colcon_cd.sh
     export _colcon_cd_root=${ROS_WORKSPACE}
 
+    #export ROS_HOME=~/my_ros_home #Alternatively, you can set ROS_HOME and the logging directory will be relative to it ($ROS_HOME/log). 
+    #export ROS_LOG_DIR=~/my_logs
+    export RCUTILS_CONSOLE_OUTPUT_FORMAT="[{severity} {time}] [{name}]: {message} ({function_name}() at {file_name}:{line_number})"
+    #export RCUTILS_COLORIZED_OUTPUT=0
+    #export RCUTILS_LOGGING_USE_STDOUT=1
+    #export RCUTILS_LOGGING_BUFFERED_STREAM=1
+}
 
-elif [[ ${USE_ROS_VERSION} -eq 1 ]];
-then
+function source_liberty_ros()
+{
     export ROS_WORKSPACE=/home/$USER/catkin_ws_liberty
 
     source /opt/ros/noetic/setup.zsh
@@ -284,7 +301,29 @@ then
     export ROS_LANG_DISABLE=genlisp:gennodejs:geneus
 
     export GAZEBO_MODEL_PATH=/home/$USER/catkin_ws_liberty/src/pcnf_automower_sim/am_gazebo/models
-fi
+}
 
+function source_pcnf_ros()
+{
+    export ROS_WORKSPACE=/home/$USER/catkin_ws
+
+    source /opt/ros/noetic/setup.zsh
+    source $ROS_WORKSPACE/devel/setup.zsh
+
+    export GAZEBO_MODEL_PATH=/home/$USER/catkin_ws_liberty/src/pcnf_automower_sim/am_gazebo/models
+}
 
 export PATH="$HOME/.yarn/bin:$HOME/.config/yarn/global/node_modules/.bin:$PATH"
+
+
+function _commands() {
+  awk '{a[$2]++}END{for(i in a){print a[i] " " i}}'
+}
+alias topten="history | commands | sort -rn | head"
+
+alias printenvandshell="( setopt posixbuiltin; set; ) | less"
+
+#unset -f sourced_ros_target                                                                                                                                                                                                                 
+#unset -f mower_connected 
+#unset -f commands
+

@@ -124,11 +124,11 @@ fi
 #DISTRO=linux-x64
 #export PATH=/usr/local/lib/nodejs/node-$VERSION-$DISTRO/bin:$PATH
 
-export GAZEBO_MODEL_PATH=/home/$USER/catkin_ws/src/automower_sim/am_gazebo/models
-export ROS_WORKSPACE=/home/$USER/catkin_ws_liberty
+#export GAZEBO_MODEL_PATH=/home/$USER/catkin_ws/src/automower_sim/am_gazebo/models
+#export ROS_WORKSPACE=/home/$USER/catkin_ws_liberty
 
-source /opt/ros/noetic/setup.bash
-source $ROS_WORKSPACE/devel/setup.sh
+#source /opt/ros/noetic/setup.bash
+#source $ROS_WORKSPACE/devel/setup.sh
 
-export ROSCONSOLE_FORMAT='[${severity}] [${time}]: [${node}] | ${message} | ${function} | ${thread} | ${file} | l:${line}'
-export ROS_LANG_DISABLE=genlisp:gennodejs:geneus
+#export ROSCONSOLE_FORMAT='[${severity}] [${time}]: [${node}] | ${message} | ${function} | ${thread} | ${file} | l:${line}'
+#export ROS_LANG_DISABLE=genlisp:gennodejs:geneus
