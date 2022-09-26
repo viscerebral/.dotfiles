@@ -323,6 +323,8 @@ alias topten="history | commands | sort -rn | head"
 
 alias printenvandshell="( setopt posixbuiltin; set; ) | less"
 
+export LC_NUMERIC="en_US.UTF-8"
+
 #unset -f sourced_ros_target                                                                                                                                                                                                                 
 #unset -f mower_connected 
 #unset -f commands
