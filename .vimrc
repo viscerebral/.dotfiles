@@ -35,10 +35,11 @@ Plugin 'tpope/vim-surround'
 
 "" - Git Support -
 Plugin 'tpope/vim-fugitive'
-Plugin 'gregsexton/gitv'
-Plugin 'airblade/vim-gitgutter'
+Plugin 'rbong/vim-flog'             " vim-fugitive extension
+Plugin 'gregsexton/gitv'            " vim-fugitive extension
 Plugin 'kablamo/vim-git-log'
-Plugin 'rbong/vim-flog'
+
+Plugin 'airblade/vim-gitgutter'
 Plugin 'Xuyuanp/nerdtree-git-plugin'
 
 "" - Language Support -
@@ -373,6 +374,7 @@ command! -nargs=0 OR   :call     CocAction('runCommand', 'editor.action.organize
 " Using CocList
 " Show all diagnostics
 nnoremap <silent> <space>a  :<C-u>CocList diagnostics<cr>
+nnoremap <silent> <space>A  :<C-u>CocDiagnostics<cr>
 " Manage extensions
 nnoremap <silent> <space>e  :<C-u>CocList extensions<cr>
 " Show commands
@@ -484,9 +486,21 @@ nnoremap <silent> [m [m
 nnoremap <silent> ]m ]m
 nnoremap <silent> [M [M
 nnoremap <silent> ]M ]M
+" vim abolish crs - snake, crm - mixed, crc - camel, cru - upper,
+" cr- - dash, cr. - dot, cr<space> - space, crt - title
+nnoremap <silent> crs crs
+nnoremap <silent> crm crm
+nnoremap <silent> crc crc
+nnoremap <silent> cru cru
+nnoremap <silent> cr- cr-
+nnoremap <silent> cr. cr.
+nnoremap <silent> cr<Space> cr<Space>
+nnoremap <silent> crt crt
+
 nnoremap <silent> <leader> :<c-u>WhichKey ','<CR>
 nnoremap <silent> <space> :WhichKey '<Space>'<CR>
 nnoremap <silent> g :WhichKey 'g'<CR>
+" nnoremap <silent> c :WhichKey 'c'<CR>
 nnoremap <silent> ] :WhichKey ']'<CR>
 nnoremap <silent> [ :WhichKey '['<CR>
 " nnoremap <silent> } :WhichKey '}'<CR>
@@ -531,6 +545,10 @@ nnoremap <leader>sa" :execute "normal \<Plug>Ysurroundiw\""<cr>
 nnoremap <leader>sa) :execute "normal \<Plug>Ysurroundiw)"<cr>
 nnoremap <leader>sa] :execute "normal \<Plug>Ysurroundiw]"<cr>
 nnoremap <leader>sa} :execute "normal \<Plug>Ysurroundiw}"<cr>
+
+"" [ NERDCommenter ]
+" map <leader>cw viw\<Plug>NERDCommenterAltDelims\<Plug>NERDCommenterComment
+"<leader>cc <leader>ca
 
 "*********************
 " AUTOCOMMANDS
