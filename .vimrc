@@ -3,7 +3,9 @@ set secure
 
 set encoding=UTF-8
 
+"*********************************************************************************************************
 " --- Vundle ---
+"*********************************************************************************************************
 set nocompatible              " be iMproved, required
 filetype off                  " required
 
@@ -23,7 +25,7 @@ Plugin 'junegunn/vim-peekaboo'
 "" - Utility exploration/search -
 Plugin 'rking/ag.vim'
 Plugin 'scrooloose/nerdtree'
-Plugin 'ctrlpvim/ctrlp.vim'
+" Plugin 'ctrlpvim/ctrlp.vim'
 Plugin 'majutsushi/tagbar'
 Plugin 'gilsondev/searchtasks.vim'
 
@@ -36,31 +38,23 @@ Plugin 'tpope/vim-surround'
 "" - Git Support -
 Plugin 'tpope/vim-fugitive'
 Plugin 'rbong/vim-flog'             " vim-fugitive extension
-Plugin 'gregsexton/gitv'            " vim-fugitive extension
-Plugin 'kablamo/vim-git-log'
 
 Plugin 'airblade/vim-gitgutter'
-Plugin 'Xuyuanp/nerdtree-git-plugin'
+Plugin 'Xuyuanp/nerdtree-git-plugin'    " nerdtree extension
 
 "" - Language Support -
 Plugin 'neoclide/coc.nvim', {'branch': 'release'}   
     "" CoC Install instructions:
         " install nodejs, ccls, build projects with: -DCMAKE_EXPORT_COMPILE_COMMANDS=YES 
-        " CocInstall coc-git coc-python coc-json coc-yank coc-calc coc-cmake coc-sh
+        " CocInstall coc-git coc-python coc-json coc-yaml? coc-yank coc-calc coc-cmake coc-sh
         " curl --compressed -o- -L https://yarnpkg.com/install.sh | bash ??
         " :call coc#util#install() (om [coc.nvim] build/index.js not found, please compile the code by esbuild.)
-Plugin 'bash-support.vim'
-""Plugin 'Conque-GDB' "Obsolete with packadd Termdebug :Termdebug
-Plugin 'cpiger/neodebug'
-"Plugin 'suan/vim-instant-markdown', {'rtp': 'after'}   " [sudo] npm -g install instant-markdown-d
-Plugin 'xuqix/h2cppx'
 
 "" - Visual -
 Plugin 'flazz/vim-colorschemes'
 Plugin 'yggdroot/indentline'
 Plugin 'luochen1990/rainbow'
-Plugin 'tiagofumo/vim-nerdtree-syntax-highlight'
-"Plugin 'sheerun/vim-polyglot' ??
+Plugin 'tiagofumo/vim-nerdtree-syntax-highlight'     " nerdtree extension
 Plugin 'jackguo380/vim-lsp-cxx-highlight'
 Plugin 'unblevable/quick-scope'
 Plugin 'ojroques/vim-scrollstatus'
@@ -75,9 +69,9 @@ call vundle#end()            " required
 filetype plugin indent on    " required
 
 
-"*********************
+"*********************************************************************************************************
 " Funcions
-"*********************
+"*********************************************************************************************************
 function ProfilingStart()
     :profile start profile.log
     :profile func *
@@ -108,14 +102,14 @@ function! CtagsGitPath()
 endfunction
 
 
-"*********************
+"*********************************************************************************************************
 " EXTERNAL CONFIGS
-"*********************
+"*********************************************************************************************************
 "source ~/.vim/config/autoclose.vim
 
-"*********************
+"*********************************************************************************************************
 " Settings
-"*********************
+"*********************************************************************************************************
 syntax on
 
 " Let's save undo info!
@@ -155,15 +149,6 @@ set hlsearch
 
 colorscheme deus
 
-""""highlight Normal ctermbg=black
-"highlight Normal ctermbg=235
-""""highlight ColorColumn ctermbg=darkgray
-
-"highlight ColorColumn ctermbg=234
-"highlight CursorLine cterm=NONE ctermbg=234
-
-"highlight Search term=reverse ctermfg=0 ctermbg=12 guifg=Black guibg=lightgray
-
 highlight SignColumn guibg=bg ctermbg=235
 highlight GitGutterAdd    guibg=bg ctermbg=235
 highlight GitGutterChange guibg=bg ctermbg=235
@@ -187,7 +172,7 @@ set laststatus=2
 set number
 set ruler
 
-
+" TODO comment this
 let &t_TI = ""
 let &t_TE = ""
 
@@ -202,11 +187,12 @@ if v:version > 703
 endif
 
 
-"********************
+"*********************************************************************************************************
 " Plugin Settings
-"********************
+"*********************************************************************************************************
 
 "" [ Vim-Airline Configuration ]
+"" ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 let g:airline#extensions#tabline#enabled = 1
 let g:airline#extensions#tabline#formatter = 'default'
 let g:airline_powerline_fonts = 1
@@ -214,8 +200,10 @@ let g:airline_theme='deus'
 let g:airline_section_x = '%{ScrollStatus()}'
 "let g:hybrid_custom_term_colors = 1
 "let g:hybrid_reduced_contrast = 1
+"" ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 "" [ NERDTree ]
+"" ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 let g:NERDTreeQuitOnOpen=1
 """ ( NERDTree highlight )
 let g:WebDevIconsDisableDefaultFolderSymbolColorFromNERDTreeDir = 1
@@ -223,52 +211,56 @@ let g:WebDevIconsDisableDefaultFolderSymbolColorFromNERDTreeDir = 1
 
 "let g:NERDTreeHighlightCursorline = 0
 "set lazyredraw
+"" ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 "" [ NERDCommenter ]
+"" ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 let g:NERDSpaceDelims = 1
 let g:NERDDefaultAlign = 'left'
 let g:NERDTrimTrailingWhitespace = 1
-
-"" [ CtrlP ]
-let g:ctrlp_working_path_mode = 'ra'
-let g:ctrlp_user_command = ['.git', 'cd %s && git ls-files -co --exclude-standard']
+"" ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 "" [ GitGutter ]
+"" ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 let g:gitgutter_sign_added = ''
 let g:gitgutter_sign_modified = ''
 let g:gitgutter_sign_removed = ''
 let g:gitgutter_sign_removed_first_line = ''
 let g:gitgutter_sign_modified_removed = ''
+"" ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 "" [ Gundo ]
+"" ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 let g:gundo_prefer_python3 = 1
+"" ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 "" [ indentline ]
+"" ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 let g:indentLine_color_term = 236
 let g:indentLine_char_list = ['┊','┆','¦','|']
 let g:indentLine_bgcolor_term = 235
 let g:indentLine_bgcolor_gui = '#FF0000'
+"" ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 "" [ vim rainbow ]
+"" ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 let g:rainbow_active = 1
 let g:rainbow_conf = {
     \	'separately': {
     \		'nerdtree': 0,
     \	}
     \}
+"" ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-"" [ cpp-enhanced-modern ]
-"let g:cpp_no_function_highlight = 1
-"let g:cpp_attributes_highlight = 1
-"let g:cpp_member_highlight = 1
-"let g:cpp_simple_highlight = 1
-
-"  vim-lsp-cxx-highlight
+"" [ vim-lsp-cxx-highlight ]
+"" ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 let g:cpp_class_scope_highlight = 1
 let g:cpp_member_variable_highlight = 1
 let g:cpp_class_decl_highlight = 1
+"" ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-" quick-scope
+"" [ quick-scope ]
+"" ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 let g:qs_highlight_on_keys = ['f', 'F', 't', 'T']
 
 highlight QuickScopePrimary guifg='#afff5f' gui=underline ctermfg=159 cterm=underline
@@ -276,6 +268,7 @@ highlight QuickScopeSecondary guifg='#5fffff' gui=underline ctermfg=193 cterm=un
 
 nmap <leader>q <plug>(QuickScopeToggle)
 xmap <leader>q <plug>(QuickScopeToggle)
+"" ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 "" [ coc ]
 "" ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -422,27 +415,9 @@ nmap <Leader>mr <Plug>(coc-calc-result-replace)
 "let g:coc_force_debug = 1
 "" ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-"*********************
+"*********************************************************************************************************
 " Custom Mappings
-"*********************
-
-" -- insert mode --
-inoremap ii <Esc>
-
-" -- normal mode --
-
-" go to next capital letter or number
-noremap <leader>C /[A-Z0-9]<CR>
-
-" Navigate around splits with a single key combo.
-nnoremap <C-l> <C-w><C-l>
-nnoremap <C-h> <C-w><C-h>
-nnoremap <C-k> <C-w><C-k>
-nnoremap <C-j> <C-w><C-j>
-
-" Prevent x from overriding what's in the clipboard.
-noremap x "_x
-noremap X "_X
+"*********************************************************************************************************
 
 "#Disable arrow movement, resize splits instead.
 if get(g:, 'elite_mode')
@@ -453,29 +428,56 @@ if get(g:, 'elite_mode')
     nnoremap <silent> <Right> :vertical resize +2<CR>
 endif
 
-" [ Ag ] Silver search word under cursor
-nnoremap <leader>ag :Ag <C-R><C-W><CR>
+" Navigate around splits with a single key combo.
+nnoremap <C-l> <C-w><C-l>
+nnoremap <C-h> <C-w><C-h>
+nnoremap <C-k> <C-w><C-k>
+nnoremap <C-j> <C-w><C-j>
 
-" Removing trailing WS
-nnoremap <leader>rt :let _s=@/ <Bar> :%s/\s\+$//e <Bar> :let @/=_s <Bar> :nohl <Bar> :unlet _s <CR>
-" Indenting
-nnoremap <leader>is [{v]}==<C-o><C-o><C-o>
+" Navigate around files in buffer.
+nnoremap <C-L> :bnext<CR>
+nnoremap <C-H> :bprevious<CR>
 
-nnoremap <leader>o o<Esc>k
-nnoremap <leader>O O<Esc>
-
-nnoremap <leader>h :set hlsearch!<CR>
-nnoremap <leader>H :set cursorline! hlsearch!<CR>
-
+" Quick fix navigating
 nnoremap gln :lnext<CR>
 nnoremap glp :lprevious<CR>
 nnoremap glo :lopen<CR>
 nnoremap glc :lclose<CR>
+
+" go to next capital letter or number
+noremap <leader>C /[A-Z0-9]<CR>
+
+" Leave insert mode
+inoremap ii <Esc>
+
+" Prevent x from overriding what's in the clipboard.
+noremap x "_x
+noremap X "_X
+
+" Removing trailing WS
+nnoremap <leader>rt :let _s=@/ <Bar> :%s/\s\+$//e <Bar> :let @/=_s <Bar> :nohl <Bar> :unlet _s <CR>
+
+" Indenting
+nnoremap <leader>is [{v]}==<C-o><C-o><C-o>
+
+" Add lines
+nnoremap <leader>o o<Esc>k
+nnoremap <leader>O O<Esc>
+
+" Toggle highlightinh search
+nnoremap <leader>h :set hlsearch!<CR>
+nnoremap <leader>H :set cursorline! hlsearch!<CR>
+
+" The FX keys
 nnoremap <leader><F4> :make<CR>
 nnoremap <leader><F5> :GundoToggle<CR>
 nnoremap <leader><F7> :call CtagsGitPath()<CR>
 nnoremap <leader><F8> :TagbarToggle<CR>
 
+"" ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+" [ vim-which-key ] 
+"" ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+" Make maps visible in [ vim-which-key ]
 nnoremap <silent> gg gg
 nnoremap <silent> gv gv
 nnoremap <silent> [{ [{
@@ -486,16 +488,19 @@ nnoremap <silent> [m [m
 nnoremap <silent> ]m ]m
 nnoremap <silent> [M [M
 nnoremap <silent> ]M ]M
+
+"" ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 " vim abolish crs - snake, crm - mixed, crc - camel, cru - upper,
 " cr- - dash, cr. - dot, cr<space> - space, crt - title
-nnoremap <silent> crs crs
-nnoremap <silent> crm crm
-nnoremap <silent> crc crc
-nnoremap <silent> cru cru
-nnoremap <silent> cr- cr-
-nnoremap <silent> cr. cr.
-nnoremap <silent> cr<Space> cr<Space>
-nnoremap <silent> crt crt
+"" ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+" nnoremap <silent> crs crs
+" nnoremap <silent> crm crm
+" nnoremap <silent> crc crc
+" nnoremap <silent> cru cru
+" nnoremap <silent> cr- cr-
+" nnoremap <silent> cr. cr.
+" nnoremap <silent> cr<Space> cr<Space>
+" nnoremap <silent> crt crt
 
 nnoremap <silent> <leader> :<c-u>WhichKey ','<CR>
 nnoremap <silent> <space> :WhichKey '<Space>'<CR>
@@ -510,24 +515,32 @@ let g:which_key_map = {}
 "let g:which_key_map.g.g = 'top of file'
 "let g:which_key_vertical = 1
 
-
 set timeoutlen=500
 
+"" ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+"" [ Ag ] Silver search word under cursor
+"" ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+nnoremap <leader>ag :Ag <C-R><C-W><CR>
+
+"" ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 "" [ NERDTree ]
+"" ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 nnoremap <C-n> :NERDTreeToggle<CR>
 
+"" ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 "" [ CtrlP ]
+"" ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 nnoremap <leader>. :CtrlPTag<CR>
 nnoremap <leader>b :CtrlPBuffer<CR>
 
+"" ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 "" [ SearchTasks ]
+"" ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 nnoremap <leader>st :SearchTasks .<CR>
 
-" -- visual mode --
-
-"" - cu -
-
+"" ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 "" [ Tabularize ]
+"" ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 noremap <leader>t=  :Tabularize /=<CR>
 noremap <leader>t:  :Tabularize /:\zs<CR>
 noremap <leader>t,  :Tabularize /,\zs<CR>
@@ -539,20 +552,26 @@ noremap <leader>t/  :Tabularize ///<CR>
 noremap <leader>t\| :Tabularize /\|<CR>
 noremap <leader>t/* :Tabularize //\*/l1c0l0<CR>
 
+"" ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 "" [ vim-surround ]
+"" ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 nnoremap <leader>sa' :execute "normal \<Plug>Ysurroundiw'"<cr>
 nnoremap <leader>sa" :execute "normal \<Plug>Ysurroundiw\""<cr>
 nnoremap <leader>sa) :execute "normal \<Plug>Ysurroundiw)"<cr>
 nnoremap <leader>sa] :execute "normal \<Plug>Ysurroundiw]"<cr>
 nnoremap <leader>sa} :execute "normal \<Plug>Ysurroundiw}"<cr>
 
+"" ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 "" [ NERDCommenter ]
+"" ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+" nnoremap <silent> <leader>c} V}:call NERDComment('x', 'toggle')<CR>
+" nnoremap <silent> <leader>c{ V{:call NERDComment('x', 'toggle')<CR>
 " map <leader>cw viw\<Plug>NERDCommenterAltDelims\<Plug>NERDCommenterComment
 "<leader>cc <leader>ca
 
-"*********************
+"*********************************************************************************************************
 " AUTOCOMMANDS
-"*********************
+"*********************************************************************************************************
 
 autocmd FileType python set tabstop=4|set shiftwidth=4|set expandtab
 autocmd FileType c,cpp,h,hpp set tabstop=2|set shiftwidth=2|set expandtab
