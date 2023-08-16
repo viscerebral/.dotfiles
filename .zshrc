@@ -269,7 +269,7 @@ alias gitlogp="git log --color --graph --pretty=format:'%Cred%h%Creset -%C(yello
 #DISTRO=linux-x64
 #export PATH=/usr/local/lib/nodejs/node-$VERSION-$DISTRO/bin:$PATH
 
-export ROS_DOMAIN_ID=23
+# export ROS_DOMAIN_ID=23
 
 ## terminal functions
 function source_tad_ros2()
