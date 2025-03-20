@@ -74,7 +74,7 @@ ROS_STRING=ROS
 
 POWERLEVEL9K_CUSTOM_MOWER_CONNECTED="_mower_connected"
 POWERLEVEL9K_CUSTOM_ROS_TARGET="_sourced_ros_target"
-POWERLEVEL9K_LEFT_PROMPT_ELEMENTS=(os_icon user root_indicator custom_mower_connected custom_ros_target dir dir_writable_joined vcs)
+POWERLEVEL9K_LEFT_PROMPT_ELEMENTS=(virtualenv os_icon user root_indicator custom_mower_connected custom_ros_target dir dir_writable_joined vcs)
 POWERLEVEL9K_RIGHT_PROMPT_ELEMENTS=(command_execution_time status background_jobs_joined date time_joined disk_usage ram load battery)
 # os icon
 POWERLEVEL9K_OS_ICON_BACKGROUND="clear"
@@ -211,17 +211,27 @@ POWERLEVEL9K_BATTERY_STAGES=""
 # Custom plugins may be added to ~/.oh-my-zsh/custom/plugins/
 # Example format: plugins=(rails git textmate ruby lighthouse)
 # Add wisely, as too many plugins slow down shell startup.
+## oh-my-zsh plugins
 plugins=(
-  z
+  aliases
+  catimg
   colored-man-pages
   dircycle
   dirhistory
   git
   history
-  sudo
-  zsh-autosuggestions
-  zsh-syntax-highlighting
+  pip
+  rsync
+  thefuck
+  z
+  virtualenv
 )
+
+## oh-my-zsh custom plugins
+plugins+=(k)                        # https://github.com/supercrabtree/k
+# plugins+=(zsh-autocomplete)         # https://github.com/marlonrichert/zsh-autocomplete
+plugins+=(zsh-autosuggestions)      # https://github.com/zsh-users/zsh-autosuggestions
+plugins+=(zsh-syntax-highlighting)  # https://github.com/zsh-users/zsh-syntax-highlighting
 
 source $ZSH/oh-my-zsh.sh
 
@@ -261,6 +271,9 @@ alias vimconfig="vim ~/.vimrc"
 #alias ls='ls --color=tty'
 #alias grep='grep  --color=auto --exclude-dir={.bzr,CVS,.git,.hg,.svn}'
 
+alias gdto="git difftool"
+alias gmto="git mergetool"
+
 alias gitlog="git log --color --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset %C(bold #262680)<%cn>%Creset' --abbrev-commit"
 alias gitlogp="git log --color --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset %C(bold #262680)<%cn>%Creset' --abbrev-commit -p"
 
@@ -272,57 +285,23 @@ alias gitlogp="git log --color --graph --pretty=format:'%Cred%h%Creset -%C(yello
 # export ROS_DOMAIN_ID=23
 
 ## terminal functions
-function source_tad_ros2()
-{
-    export ROS_WORKSPACE=/home/$USER/colcon_ws
-
-    source /opt/ros/foxy/setup.zsh
-    #source $ROS_WORKSPACE/devel/setup.zsh
-    source /opt/ros/foxy/share/ros2cli/environment/ros2-argcomplete.zsh
-
-    source /usr/share/colcon_cd/function/colcon_cd.sh
-    export _colcon_cd_root=${ROS_WORKSPACE}
-
-    #export ROS_HOME=~/my_ros_home #Alternatively, you can set ROS_HOME and the logging directory will be relative to it ($ROS_HOME/log). 
-    #export ROS_LOG_DIR=~/my_logs
-    export RCUTILS_CONSOLE_OUTPUT_FORMAT="[{severity} {time}] [{name}]: {message} ({function_name}() at {file_name}:{line_number})"
-    #export RCUTILS_COLORIZED_OUTPUT=0
-    #export RCUTILS_LOGGING_USE_STDOUT=1
-    #export RCUTILS_LOGGING_BUFFERED_STREAM=1
-}
-
-function source_liberty_ros()
-{
-    export ROS_WORKSPACE=/home/$USER/catkin_ws_liberty
-
-    source /opt/ros/noetic/setup.zsh
-    source $ROS_WORKSPACE/devel/setup.zsh
-
-    export ROSCONSOLE_FORMAT='[${severity}] [${time}]: [${node}] | ${message} | ${function} | ${thread} | ${file} | l:${line}'
-    export ROS_LANG_DISABLE=genlisp:gennodejs:geneus
-
-    export GAZEBO_MODEL_PATH=/home/$USER/catkin_ws_liberty/src/pcnf_automower_sim/am_gazebo/models
-}
-
-function source_pcnf_ros()
-{
-    export ROS_WORKSPACE=/home/$USER/catkin_ws
-
-    source /opt/ros/noetic/setup.zsh
-    source $ROS_WORKSPACE/devel/setup.zsh
-
-    export GAZEBO_MODEL_PATH=/home/$USER/catkin_ws_liberty/src/pcnf_automower_sim/am_gazebo/models
-}
 
 export PATH="$HOME/.yarn/bin:$HOME/.config/yarn/global/node_modules/.bin:$PATH"
+export MPLBACKEND=TkAgg
 
 
 function _commands() {
   awk '{a[$2]++}END{for(i in a){print a[i] " " i}}'
 }
-alias topten="history | commands | sort -rn | head"
+function mdv() {
+  pandoc $1 > /tmp/$1.html
+  xdg-open /tmp/$1.html
+}
+alias topten="history | _commands | sort -rn | head"
 
 alias printenvandshell="( setopt posixbuiltin; set; ) | less"
+
+alias wtf="fuck"
 
 export LC_NUMERIC="en_US.UTF-8"
 
